@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-jvm堆栈方法区概念" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/jvm%E5%A0%86%E6%A0%88%E6%96%B9%E6%B3%95%E5%8C%BA%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.056Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1、Java栈"><a href="#1、Java栈" class="headerlink" title="1、Java栈"></a>1、Java栈</h1><p>Java栈的区域很小，只有1M，特点是存取速度很快，所以在stack中存放的都是快速执行的任务，<strong>基本数据类型的数据</strong>，和<strong>对象的引用（reference）</strong>。</p>
+<p>驻留于常规RAM（<strong>随机访问存储器</strong>）区域。但可通过它的<strong>“栈指针”</strong>获取处理的直接支持。<strong>栈指针若向下移，会创建新的内存</strong>；<strong>若向上移，则会释放那些内存</strong>。这是一种特别快、特别有效的数据保存方式，仅次于寄存器。创建程序时，Java编译器必须准确地知道堆栈内保存的所有数据的“长度”以及“存在时间”。这是由于它必须生成相应的代码，以便向上和向下移动指针。这一限制无疑影响了程序的灵活性，所以尽管有些Java数据要保存在栈里——特别是对象句柄，但Java对象并不放到其中。</p>
+<p>JVM只会直接对JavaStack（Java栈）执行两种操作：①以帧为单位的压栈或出栈；②通过-Xss来设置， 若不够会抛出StackOverflowError异常。</p>
+<p>1.每个线程包含一个栈区，栈中只保存基本数据类型的数据和自定义对象的引用(不是对象)，对象都存放在堆区中<br>2.每个栈中的数据(原始类型和对象引用)都是私有的，其他栈不能访问。<br>3.栈分为3个部分：基本数据类型的变量区、执行环境上下文、操作指令区(存放操作指令)。</p>
+<p>栈是存放线程调用方法时存储局部变量表，操作，方法出口等与方法执行相关的信息，Java栈所占内存的大小由Xss来调节，方法调用层次太多会撑爆这个区域。</p>
+<h1 id="2、程序计数（ProgramCounter）寄存器"><a href="#2、程序计数（ProgramCounter）寄存器" class="headerlink" title="2、程序计数（ProgramCounter）寄存器"></a>2、程序计数（ProgramCounter）寄存器</h1><p>PC寄存器（ PC register ）：每个线程启动的时候，都会创建一个PC（Program Counter，程序计数器）寄存器。PC寄存器里保存有当前正在执行的JVM指令的地址。 每一个线程都有它自己的PC寄存器，也是该线程启动时创建的。保存下<em>一条将要执行的指令地址的寄存器是</em> ：PC寄存器。PC寄存器的内容总是指向下一条将被执行指令的地址，这里的地址可以是一个本地指针，也可以是在方法区中相对应于该方法起始指令的偏移量。</p>
+<h1 id="3、本地方法栈"><a href="#3、本地方法栈" class="headerlink" title="3、本地方法栈"></a>3、本地方法栈</h1><p>Nativemethodstack(本地方法栈)：保存native方法进入区域的地址。</p>
+<h1 id="4、堆"><a href="#4、堆" class="headerlink" title="4、堆"></a>4、堆</h1><p><strong>类的对象放在heap（堆）中</strong>，所有的<strong>类对象都是通过new方法创建</strong>，创建后，在stack（栈）会创建类对象的引用（内存地址）。</p>
+<p>一种常规用途的内存池（也在RAM（随机存取存储器 ）区域），其中保存了Java对象。和栈不同：“<strong>内存堆”或“堆”最吸引人的地方在于编译器不必知道要从堆里分配多少存储空间，也不必知道存储的数据要在堆里停留多长的时间</strong>。因此，用堆保存数据时会得到更大的灵活性。要求创建一个对象时，只需用new命令编辑相应的代码即可。执行这些代码时，会在堆里自动进行数据的保存。当然，为达到这种灵活性，必然会付出一定的代价：在堆里分配存储空间时会花掉更长的时间。</p>
+<p>JVM将所有对象的实例（即用new创建的对象）（对应于对象的引用（引用就是内存地址））的内存都分配在堆上，堆所占内存的大小由-Xmx指令和-Xms指令来调节，sample如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HeapOOM</span> &#123;              </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">OOMObject</span>&#123;&#125;          </span><br><span class="line">    <span class="comment">/**       </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args       </span></span><br><span class="line"><span class="comment">     */</span>       </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;           </span><br><span class="line">        <span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();<span class="comment">// List类和ArrayList类都是集合类，</span></span><br><span class="line">                                    <span class="comment">// 但是ArrayList可以理解为顺序表，</span></span><br><span class="line">                                    <span class="comment">// 属于线性表。                      </span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;               </span><br><span class="line">            list.add(<span class="keyword">new</span> <span class="title class_">OOMObject</span>());           </span><br><span class="line">        &#125;       </span><br><span class="line">    &#125;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加上JVM参数-verbose:gc -Xms10M -Xmx10M -XX:+PrintGCDetails -XX:SurvivorRatio&#x3D;8 -XX:+HeapDumpOnOutOfMemoryError，就能很快报出OOM异常（内存溢出异常）：</p>
+<p>Exception in thread “main” java.lang.OutOfMemoryError: Java heap space</p>
+<p>并且能自动生成Dump。</p>
+<h1 id="5、方法区"><a href="#5、方法区" class="headerlink" title="5、方法区"></a>5、方法区</h1><p><strong>method（方法区）又叫静态区，存放所有的①类（class），②静态变量（static变量），③静态方法，④常量和⑤成员方法。</strong></p>
+<p>1.又叫静态区，跟堆一样，被所有的线程共享。</p>
+<p>2.方法区中存放的都是在整个程序中永远唯一的元素。这也是方法区被所有的线程共享的原因。</p>
+<p>（顺便展开静态变量和常量的区别： 静态变量本质是变量，是整个类所有对象共享的一个变量，其值一旦改变对这个类的所有对象都有影响；常量一旦赋值后不能修改其引用，其中基本数据类型的常量不能修改其值。）</p>
+<p>Java里面是没有静态变量这个概念的，不信你自己在某个成员方法里面定义一个static int i &#x3D; 0；Java里只有静态成员变量。它属于类的属性。至于他放哪里？楼上说的是静态区。我不知道到底有没有这个翻译。但是深入JVM里是翻译为方法区的。虚拟机的体系结构：①Java栈，② 堆，③PC寄存器，④方法区，⑤本地方法栈，⑥运行常量池。而方法区保存的就是一个类的模板，堆是放类的实例（即对象）的。栈是一般来用来函数计算的。随便找本计算机底层的书都知道了。栈里的数据，函数执行完就不会存储了。这就是为什么局部变量每一次都是一样的。就算给他加一后，下次执行函数的时候还是原来的样子。</p>
+<p>方法区的大小由-XX:PermSize和-XX:MaxPermSize来调节，类太多有可能撑爆永久代。静态变量或常量也有可能撑爆方法区。 </p>
+<h1 id="6、运行常量池-也属于方法区的"><a href="#6、运行常量池-也属于方法区的" class="headerlink" title="6、运行常量池(也属于方法区的)"></a>6、运行常量池(也属于方法区的)</h1><p>这儿的“静态”是指“位于固定位置”。程序运行期间，静态存储的数据将随时等候调用。可用static关键字指出一个对象的特定元素是静态的。但Java对象本身永远都不会置入静态存储空间。</p>
+<p>这个区域属于方法区。该区域存放类和接口的常量，除此之外，它还存放成员变量和成员方法的所有引用。当一个成员变量或者成员方法被引用的时候，JVM就通过运行常量池中的这些引用来查找成员变量和成员方法在内存中的的实际地址。</p>
+<h1 id="7、举例分析"><a href="#7、举例分析" class="headerlink" title="7、举例分析"></a>7、举例分析</h1><p>例子如下：</p>
+<p>为了更清楚地搞明白程序运行时，数据区里的情况，我们来准备2个小道具（2个非常简单的小程序）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AppMain.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppMain</span> &#123;                         <span class="comment">//运行时，JVM把AppMain的信息都放入方法区    </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123; <span class="comment">//main成员方法本身放入方法区。    </span></span><br><span class="line">        <span class="type">Sample</span> <span class="variable">test1</span> <span class="operator">=</span> <span class="keyword">new</span>  <span class="title class_">Sample</span>( <span class="string">&quot; 测试1 &quot;</span> );   <span class="comment">//test1是引用，所以放到栈区里，Sample是自定义对象应该放到堆里面    </span></span><br><span class="line">        <span class="type">Sample</span> <span class="variable">test2</span> <span class="operator">=</span> <span class="keyword">new</span>  <span class="title class_">Sample</span>( <span class="string">&quot; 测试2 &quot;</span> );         </span><br><span class="line">        test1.printName();    </span><br><span class="line">        test2.printName();    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// Sample.java       </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sample</span> &#123;   <span class="comment">//运行时，JVM把appmain的信息都放入方法区。            </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  name;      <span class="comment">//new Sample实例后，name引用放入栈区里，name对象放入堆里。     </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  <span class="title function_">Sample</span><span class="params">(String name)</span> &#123;    </span><br><span class="line">        <span class="built_in">this</span> .name = name;    </span><br><span class="line">    &#125;          </span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span>   <span class="keyword">void</span>  <span class="title function_">printName</span><span class="params">()</span> &#123;<span class="comment">// printName()成员方法本身放入方法区里。    </span></span><br><span class="line">        System.out.println(name);    </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>OK，让我们开始行动吧，出发指令就是：“java AppMain”，包包里带好我们的行动向导图。</p>
+<p>系统收到了我们发出的指令，启动了一个Java虚拟机进程，这个进程首先从classpath中找到AppMain.class文件，读取这个文件中的二进制数据，然后把Appmain类的类信息存放到运行时数据区的方法区中。这一过程称为AppMain类的加载过程。</p>
+<p>接着，JVM定位到方法区中AppMain类的Main()方法的字节码，开始执行它的指令。这个main()方法的第一条语句就是：</p>
+<p>Sample test1 &#x3D; new Sample(“测试1”);</p>
+<p>语句很简单啦，就是让JVM创建一个Sample实例，并且呢，使引用变量test1引用这个实例。貌似小case一桩哦，就让我们来跟踪一下JVM，看看它究竟是怎么来执行这个任务的：</p>
+<p>1、Java虚拟机一看，不就是建立一个Sample类的实例吗，简单，于是就直奔方法区（方法区存放已经加载的类的相关信息，如类、静态变量和常量）而去，先找到Sample类的类型信息再说。结果呢，嘿嘿，没找到@@，这会儿的方法区里还没有Sample类呢（即Sample类的类信息还没有进入方法区中）。可JVM也不是一根筋的笨蛋，于是，它发扬“自己动手，丰衣足食”的作风，立马加载了Sample类， 把Sample类的相关信息存放在了方法区中。</p>
+<p>2、Sample类的相关信息加载完成后。Java虚拟机做的第一件事情就是在堆中为一个新的Sample类的实例分配内存，这个Sample类的实例持有着指向方法区的Sample类的类型信息的引用（Java中引用就是内存地址）。这里所说的引用，实际上指的是Sample类的类型信息在方法区中的内存地址，其实，就是有点类似于C语言里的指针啦~~，而这个地址呢，就存放了在Sample类的实例的数据区中。</p>
+<p>3、在JVM中的一个进程中，每个线程都会拥有一个方法调用栈，用来跟踪线程运行中一系列的方法调用过程，栈中的每一个元素被称为栈帧，每当线程调用一个方法的时候就会向方法栈中压入一个新栈帧。这里的帧用来存储方法的参数、局部变量和运算过程中的临时数据。OK，原理讲完了，就让我们来继续我们的跟踪行动！位于“&#x3D;”前的test1是一个在main()方法中定义的变量，可见，它是一个局部变量，因此，test1这个局部变量会被JVM添加到执行main()方法的主线程的Java方法调用栈中。而“&#x3D;”将把这个test1变量指向堆区中的Sample实例，也就是说，test1这个局部变量持有指向Sample类的实例的引用（即内存地址）。</p>
+<p>OK，到这里为止呢，JVM就完成了这个简单语句的执行任务。参考我们的行动向导图，我们终于初步摸清了JVM的一点点底细了，COOL！</p>
+<p>接下来，JVM将继续执行后续指令，在堆区里继续创建另一个Sample类的实例，然后依次执行它们的printName()方法。当JVM执行test1.printName()方法时，JVM根据局部变量test1持有的引用，定位到堆中的Sample类的实例，再根据Sample类的实例持有的引用，定位到方法区中Sample类的类型信息（包括①类，②静态变量，③静态方法，④常量和⑤成员方法），从而获取printName()成员方法的字节码，接着执行printName()成员方法包含的指令。</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118104858930.png" alt="image-20220118104858930"></p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118105033300.png" alt="image-20220118105033300"></p>
+<p>Jvm调优一般都是在调堆</p>
+<ul>
+<li><p>类加载器</p>
+<p>作用：加载Class文件~</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118113558881.png" alt="image-20220118113558881"></p>
+<ul>
+<li>虚拟机自带的加载器</li>
+<li>启动类（根）加载器</li>
+<li>扩展类加载器</li>
+<li>应用程序加载器</li>
+<li>百度：双亲委派机制</li>
+</ul>
+</li>
+<li><p>双亲委派机制</p>
+<ul>
+<li>双亲委派机制安全</li>
+<li>App&#x3D;&#x3D;&#x3D;&gt;EXC&#x3D;&#x3D;&#x3D;&gt;BOOT（最终执行）</li>
+<li>如果BOOT里面没有 EXC里面也没有最后才回去当前应用中寻找</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">string</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>();</span><br><span class="line">        s.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果自己定义一个java.lang中的toString方法，最终执行会报没有main方法的错误原因为最终执行的还是jdk中自带的toString其中是没有main方法的。</p>
+<ul>
+<li><p>类加载器收到加载的请求</p>
+</li>
+<li><p>将这个请求向上委托给父类加载器去完成，一直委托直到启动类加载器</p>
+</li>
+<li><p>启动加载器检查是否能够加载当前这个类，能加载就结束，使用当前的加载器，否则，抛出异常，通知子类加载器进行加载</p>
+</li>
+<li><p>重复步骤3</p>
+<p>Class Not found~</p>
+<p>null:java调用不到~ C、C++</p>
+<p>Java &#x3D; C++：去掉繁琐的东西，指针，内存管理~</p>
+<p>Java &#x3D; C++–</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/jvm%E5%A0%86%E6%A0%88%E6%96%B9%E6%B3%95%E5%8C%BA%E6%A6%82%E5%BF%B5/" data-id="cl5kjvtc5000aus8b2hxjap0l" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-idea打包项目" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/idea%E6%89%93%E5%8C%85%E9%A1%B9%E7%9B%AE/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.046Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="SpringBoot-vue打包项目"><a href="#SpringBoot-vue打包项目" class="headerlink" title="SpringBoot+vue打包项目"></a>SpringBoot+vue打包项目</h1><ul>
+<li><p>后端</p>
+<ul>
+<li><p>网上教程为通过maven打包<code>mvn clean install -Dmaven.test.skip=true</code>，到target目录下，找到打包的jar包，运行</p>
+</li>
+<li><p>打包成功会遇到jar没有主清单属性的错误</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring-boot-01-helloworld-1.0-SNAPSHOT.jar中没有主清单属性</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220628171804544.png" alt="image-20220628171804544"></p>
+</li>
+<li><p>解决方法：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 这个插件，可以将应用打包成一个可执行的jar包  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在plugin中添加如下代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">goal</span>&gt;</span>repackage<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后结果为</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 这个插件，可以将应用打包成一个可执行的jar包  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">goal</span>&gt;</span>repackage<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行后发现多出一个文件</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220628172411324.png" alt="image-20220628172411324"></p>
+</li>
+<li><p>然后到对应的文件夹中直接运行就可以</p>
+</li>
+<li><pre><code>java -jar springboot-1.0-SNAPSHOT.jar --server-port=8000
+</code></pre>
+</li>
+<li><p>然后能够访问</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220628172635906.png" alt="image-20220628172635906"></p>
+</li>
+</ul>
+</li>
+<li><p>前端</p>
+<ul>
+<li><p><code>npm run build</code>直接打包，但是现在出现了问题</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220628172931186.png" alt="image-20220628172931186"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>​	网上的方法几乎都尝试便了，有删除<code>node_modules</code> 和<code>package-lock.json</code>，然后重新安装<code>npm install</code></p>
+<p>​	有更改<code>node</code>版本的，高版本低版本都尝试过了，</p>
+<p>​	暂时还没有执行成功</p>
+<p>​		</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/idea%E6%89%93%E5%8C%85%E9%A1%B9%E7%9B%AE/" data-id="cl5kjvtc20008us8b46mpf98v" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-java面试基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/java%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.046Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Java集合常见知识点"><a href="#Java集合常见知识点" class="headerlink" title="Java集合常见知识点"></a>Java集合常见知识点</h1><h2 id="Map接口"><a href="#Map接口" class="headerlink" title="Map接口"></a>Map接口</h2><h4 id="HashMap和HashTable的区别"><a href="#HashMap和HashTable的区别" class="headerlink" title="HashMap和HashTable的区别"></a><strong>HashMap和HashTable的区别</strong></h4><ul>
+<li><strong>线程是否安全</strong>：<code>HashMap</code>是非线程安全的，<code>HashTable</code>是线程安全的（内部方法基本经过<code>synchronize</code>修饰），若想使用<code>HashMap</code>并且保证线程安全则需要使用<code>ConcurrentHashMap</code>；</li>
+<li><strong>效率</strong>：<code>HashMap</code>效率高于<code>HashTable</code>，<code>HashTable</code>基本已经被淘汰</li>
+<li><strong>对于Null key和Null value的支持</strong>：<code>HashMap</code>可以存储null的key和value，但是准守key不重复的规则，因此null作为可以只能存在一次，但是作为value可以有多个；<code>hashtable</code>不允许有null的键和值存在，否则会抛出异常（<code>NullPointerException</code>）</li>
+<li><strong>初始容量大小和每次扩容大小不同</strong>：<code>HashMap</code>初始大小为16，每次扩充容量变为原来的2倍，<code>HashTable</code>默认初始大小为11，每次扩充容量变为原来的2n+1；如果创建时给定初始容量大小，<code>HashTable</code>则直接使用，<code>HashMap</code>将其扩充为2的幂次方大小。</li>
+<li><strong>底层数据结构</strong>：JDK1.8 以后的 <code>HashMap</code> 在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树，以减少搜索时间。Hashtable 没有这样的机制。</li>
+</ul>
+<h4 id="HashMap-和-HashSet-区别"><a href="#HashMap-和-HashSet-区别" class="headerlink" title="HashMap 和 HashSet 区别"></a>HashMap 和 HashSet 区别</h4><p><code>HashSet</code> 底层就是基于 <code>HashMap</code> 实现的。（<code>HashSet</code> 的源码非常非常少，因为除了 <code>clone()</code>、<code>writeObject()</code>、<code>readObject()</code>是 <code>HashSet</code> 自己不得不实现之外，其他方法都是直接调用 <code>HashMap</code> 中的方法。</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>HashMap</code></th>
+<th align="center"><code>HashSet</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">实现了 <code>Map</code> 接口</td>
+<td align="center">实现 <code>Set</code> 接口</td>
+</tr>
+<tr>
+<td align="center">存储键值对</td>
+<td align="center">仅存储对象</td>
+</tr>
+<tr>
+<td align="center">调用 <code>put()</code>向 map 中添加元素</td>
+<td align="center">调用 <code>add()</code>方法向 <code>Set</code> 中添加元素</td>
+</tr>
+<tr>
+<td align="center"><code>HashMap</code> 使用键（Key）计算 <code>hashcode</code></td>
+<td align="center"><code>HashSet</code> 使用成员对象来计算 <code>hashcode</code> 值，对于两个对象来说 <code>hashcode</code> 可能相同，所以<code>equals()</code>方法用来判断对象的相等性</td>
+</tr>
+</tbody></table>
+<h4 id="HashMap和TreeMap区别"><a href="#HashMap和TreeMap区别" class="headerlink" title="HashMap和TreeMap区别"></a>HashMap和TreeMap区别</h4><p><code>TreeMap</code> 和<code>HashMap</code> 都继承自<code>AbstractMap</code> ，但是需要注意的是<code>TreeMap</code>它还实现了<code>NavigableMap</code>接口和<code>SortedMap</code> 接口。</p>
+<p>实现 <code>NavigableMap</code> 接口让 <code>TreeMap</code> 有了对集合内元素的搜索的能力。</p>
+<p>实现<code>SortedMap</code>接口让 <code>TreeMap</code> 有了对集合中的元素根据键排序的能力。默认是按 key 的升序排序，不过我们也可以指定排序的比较器</p>
+<p><strong>综上，相比于<code>HashMap</code>来说 <code>TreeMap</code> 主要多了对集合中的元素根据键排序的能力以及对集合内元素的搜索的能力。</strong></p>
+<h4 id="hashCode-与-equals-的相关规定："><a href="#hashCode-与-equals-的相关规定：" class="headerlink" title="hashCode()与 equals() 的相关规定："></a><strong><code>hashCode()</code>与 <code>equals()</code> 的相关规定：</strong></h4><ol>
+<li>如果两个对象相等，则 <code>hashcode</code> 一定也是相同的</li>
+<li>两个对象相等,对两个 <code>equals()</code> 方法返回 true</li>
+<li>两个对象有相同的 <code>hashcode</code> 值，它们也不一定是相等的</li>
+<li>综上，<code>equals()</code> 方法被覆盖过，则 <code>hashCode()</code> 方法也必须被覆盖</li>
+<li><code>hashCode()</code>的默认行为是对堆上的对象产生独特值。如果没有重写 <code>hashCode()</code>，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）。</li>
+</ol>
+<h4 id="x3D-x3D-与-equals-的区别"><a href="#x3D-x3D-与-equals-的区别" class="headerlink" title="&#x3D;&#x3D;与 equals 的区别"></a><strong>&#x3D;&#x3D;与 equals 的区别</strong></h4><p>对于基本类型来说，&#x3D;&#x3D; 比较的是值是否相等；</p>
+<p>对于引用类型来说，&#x3D;&#x3D; 比较的是两个引用是否指向同一个对象地址（两者在内存中存放的地址（堆内存地址）是否指向同一个地方）；</p>
+<p>对于引用类型（包括包装类型）来说，equals 如果没有被重写，对比它们的地址是否相等；如果 equals()方法被重写（例如 String），则比较的是地址里的内容。</p>
+<h4 id="HashMap底层实现"><a href="#HashMap底层实现" class="headerlink" title="HashMap底层实现"></a>HashMap底层实现</h4><h5 id="JDK1-8以前"><a href="#JDK1-8以前" class="headerlink" title="JDK1.8以前"></a>JDK1.8以前</h5><p> <strong>“拉链法”</strong> 就是：将链表和数组相结合。也就是说创建一个链表数组，数组中每一格就是一个链表。若遇到哈希冲突，则将冲突的值加到链表中即可</p>
+<h4 id="JDK1-8之后"><a href="#JDK1-8之后" class="headerlink" title="JDK1.8之后"></a>JDK1.8之后</h4><p>JDK1.8 之后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树，以减少搜索时间。</p>
+<p>TreeMap、TreeSet 以及 JDK1.8 之后的 HashMap 底层都用到了红黑树。红黑树就是为了解决二叉查找树的缺陷，因为二叉查找树在某些情况下会退化成一个线性结构。</p>
+<h4 id="HashMap-的长度为什么是-2-的幂次方"><a href="#HashMap-的长度为什么是-2-的幂次方" class="headerlink" title="HashMap 的长度为什么是 2 的幂次方"></a>HashMap 的长度为什么是 2 的幂次方</h4><p>为了能让 HashMap 存取高效，尽量较少碰撞，也就是要尽量把数据分配均匀。我们上面也讲到了过了，Hash 值的范围值-2147483648 到 2147483647，前后加起来大概 40 亿的映射空间，只要哈希函数映射得比较均匀松散，一般应用是很难出现碰撞的。但问题是一个 40 亿长度的数组，内存是放不下的。所以这个散列值是不能直接拿来用的。用之前还要先做对数组的长度取模运算，得到的余数才能用来要存放的位置也就是对应的数组下标。这个数组下标的计算方法是“ <code>(n - 1) &amp; hash</code>”。（n 代表数组长度）。这也就解释了 HashMap 的长度为什么是 2 的幂次方。</p>
+<p><strong>这个算法应该如何设计呢？</strong></p>
+<p>我们首先可能会想到采用%取余的操作来实现。但是，重点来了：<strong>“取余(%)操作中如果除数是 2 的幂次则等价于与其除数减一的与(&amp;)操作（也就是说 hash%length&#x3D;&#x3D;hash&amp;(length-1)的前提是 length 是 2 的 n 次方；）。”</strong> 并且 <strong>采用二进制位操作 &amp;，相对于%能够提高运算效率，这就解释了 HashMap 的长度为什么是 2 的幂次方。</strong></p>
+<h1 id="Java集合使用注意事项总结"><a href="#Java集合使用注意事项总结" class="headerlink" title="Java集合使用注意事项总结"></a>Java集合使用注意事项总结</h1><h2 id="集合判空"><a href="#集合判空" class="headerlink" title="集合判空"></a>集合判空</h2><p><strong>判断所有集合内部的元素是否为空，使用 <code>isEmpty()</code> 方法，而不是 <code>size()==0</code> 的方式。</strong></p>
+<p>这是因为 <code>isEmpty()</code> 方法的可读性更好，并且时间复杂度为 O(1)。</p>
+<p>绝大部分我们使用的集合的 <code>size()</code> 方法的时间复杂度也是 O(1)，不过，也有很多复杂度不是 O(1) 的，比如 <code>java.util.concurrent</code> 包下的某些集合（<code>ConcurrentLinkedQueue</code> 、<code>ConcurrentHashMap</code>…）。</p>
+<p>下面是 <code>ConcurrentHashMap</code> 的 <code>size()</code> 方法和 <code>isEmpty()</code> 方法的源码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">long</span> <span class="variable">n</span> <span class="operator">=</span> sumCount();</span><br><span class="line">    <span class="keyword">return</span> ((n &lt; <span class="number">0L</span>) ? <span class="number">0</span> :</span><br><span class="line">            (n &gt; (<span class="type">long</span>)Integer.MAX_VALUE) ? Integer.MAX_VALUE :</span><br><span class="line">            (<span class="type">int</span>)n);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">final</span> <span class="type">long</span> <span class="title function_">sumCount</span><span class="params">()</span> &#123;</span><br><span class="line">    CounterCell[] as = counterCells; CounterCell a;</span><br><span class="line">    <span class="type">long</span> <span class="variable">sum</span> <span class="operator">=</span> baseCount;</span><br><span class="line">    <span class="keyword">if</span> (as != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; as.length; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((a = as[i]) != <span class="literal">null</span>)</span><br><span class="line">                sum += a.value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> sumCount() &lt;= <span class="number">0L</span>; <span class="comment">// ignore transient negative values</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="集合转Map"><a href="#集合转Map" class="headerlink" title="集合转Map"></a>集合转Map</h2><p><strong>在使用 <code>java.util.stream.Collectors</code> 类的 <code>toMap()</code> 方法转为 <code>Map</code> 集合时，一定要注意当 value 为 null 时会抛 NPE 异常。</strong></p>
+<h2 id="集合遍历"><a href="#集合遍历" class="headerlink" title="集合遍历"></a>集合遍历</h2><p><strong>不要在 foreach 循环里进行元素的 <code>remove/add</code> 操作。remove 元素请使用 <code>Iterator</code> 方式，如果并发操作，需要对 <code>Iterator</code> 对象加锁。</strong></p>
+<p>通过反编译你会发现 foreach 语法糖底层其实还是依赖 <code>Iterator</code> 。不过，<code>remove/add</code> 操作直接调用的是集合自己的方法，而不是 <code>Iterator</code> 的 <code>remove/add</code>方法这就导致 <code>Iterator</code> 莫名其妙地发现自己有元素被 <code>remove/add</code> ，然后，它就会抛出一个 <code>ConcurrentModificationException</code> 来提示用户发生了并发修改异常。这就是单线程状态下产生的 <strong>fail-fast 机制</strong>。</p>
+<p><strong>fail-fast 机制</strong> ：多个线程对 fail-fast 集合进行修改的时候，可能会抛出<code>ConcurrentModificationException</code>。 即使是单线程下也有可能会出现这种情况，上面已经提到过。</p>
+<h2 id="集合去重"><a href="#集合去重" class="headerlink" title="集合去重"></a>集合去重</h2><p><strong>可以利用 <code>Set</code> 元素唯一的特性，可以快速对一个集合进行去重操作，避免使用 <code>List</code> 的 <code>contains()</code> 进行遍历去重或者判断包含操作。</strong></p>
+<p>以 <code>HashSet</code> 和 <code>ArrayList</code> 为例说明。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set 去重代码示例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Set&lt;T&gt; <span class="title function_">removeDuplicateBySet</span><span class="params">(List&lt;T&gt; data)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(data)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// List 去重代码示例</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">removeDuplicateByList</span><span class="params">(List&lt;T&gt; data)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(data)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    List&lt;T&gt; result = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(data.size());</span><br><span class="line">    <span class="keyword">for</span> (T current : data) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!result.contains(current)) &#123;</span><br><span class="line">            result.add(current);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两者的核心差别在于 <code>contains()</code> 方法的实现。</p>
+<p><code>HashSet</code> 的 <code>contains()</code> 方法底部依赖的 <code>HashMap</code> 的 <code>containsKey()</code> 方法，时间复杂度接近于 O（1）（没有出现哈希冲突的时候为 O（1））。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> HashMap&lt;E,Object&gt; map;</span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> map.containsKey(o);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有 N 个元素插入进 Set 中，那时间复杂度就接近是 O (n)。</p>
+<p><code>ArrayList</code> 的 <code>contains()</code> 方法是通过遍历所有元素的方法来做的，时间复杂度接近是 O(n)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> indexOf(o) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">indexOf</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (elementData[i]==<span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (o.equals(elementData[i]))</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>List</code> 有 N 个元素，那时间复杂度就接近是 O (n^2)。</p>
+<h2 id="集合转数组"><a href="#集合转数组" class="headerlink" title="集合转数组"></a>集合转数组</h2><p><strong>使用集合转数组的方法，必须使用集合的 <code>toArray(T[] array)</code>，传入的是类型完全一致、长度为 0 的空数组。</strong></p>
+<p><code>toArray(T[] array)</code> 方法的参数是一个泛型数组，如果 <code>toArray</code> 方法中没有传递任何参数的话返回的是 <code>Object</code>类 型数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String [] s= <span class="keyword">new</span> <span class="title class_">String</span>[]&#123;</span><br><span class="line">    <span class="string">&quot;dog&quot;</span>, <span class="string">&quot;lazy&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;over&quot;</span>, <span class="string">&quot;jumps&quot;</span>, <span class="string">&quot;fox&quot;</span>, <span class="string">&quot;brown&quot;</span>, <span class="string">&quot;quick&quot;</span>, <span class="string">&quot;A&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line">List&lt;String&gt; list = Arrays.asList(s);</span><br><span class="line">Collections.reverse(list);</span><br><span class="line"><span class="comment">//没有指定类型的话会报错</span></span><br><span class="line">s=list.toArray(<span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+
+<p>由于 JVM 优化，<code>new String[0]</code>作为<code>Collection.toArray()</code>方法的参数现在使用更好，<code>new String[0]</code>就是起一个模板的作用，指定了返回数组的类型，0 是为了节省空间，因为它只是为了说明返回的类型。详见：<a target="_blank" rel="noopener" href="https://shipilev.net/blog/2016/arrays-wisdom-ancients/">https://shipilev.net/blog/2016/arrays-wisdom-ancients/</a></p>
+<h2 id="数组转集合"><a href="#数组转集合" class="headerlink" title="数组转集合"></a>数组转集合</h2><p><strong>使用工具类 <code>Arrays.asList()</code> 把数组转换成集合时，不能使用其修改集合相关的方法， 它的 <code>add/remove/clear</code> 方法会抛出 <code>UnsupportedOperationException</code> 异常。</strong></p>
+<p><code>Arrays.asList()</code>在平时开发中还是比较常见的，我们可以使用它将一个数组转换为一个 <code>List</code> 集合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String[] myArray = &#123;<span class="string">&quot;Apple&quot;</span>, <span class="string">&quot;Banana&quot;</span>, <span class="string">&quot;Orange&quot;</span>&#125;;</span><br><span class="line">List&lt;String&gt; myList = Arrays.asList(myArray);</span><br><span class="line"><span class="comment">//上面两个语句等价于下面一条语句</span></span><br><span class="line">List&lt;String&gt; myList = Arrays.asList(<span class="string">&quot;Apple&quot;</span>,<span class="string">&quot;Banana&quot;</span>, <span class="string">&quot;Orange&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>注意事项总结：</p>
+<ul>
+<li><strong><code>Arrays.asList()</code>是泛型方法，传递的数组必须是对象数组，而不是基本类型。</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] myArray = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">List</span> <span class="variable">myList</span> <span class="operator">=</span> Arrays.asList(myArray);</span><br><span class="line">System.out.println(myList.size());<span class="comment">//1</span></span><br><span class="line">System.out.println(myList.get(<span class="number">0</span>));<span class="comment">//数组地址值</span></span><br><span class="line">System.out.println(myList.get(<span class="number">1</span>));<span class="comment">//报错：ArrayIndexOutOfBoundsException</span></span><br><span class="line"><span class="type">int</span>[] array = (<span class="type">int</span>[]) myList.get(<span class="number">0</span>);</span><br><span class="line">System.out.println(array[<span class="number">0</span>]);<span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+
+<p>当传入一个原生数据类型数组时，<code>Arrays.asList()</code> 的真正得到的参数就不是数组中的元素，而是数组对象本身！此时 <code>List</code> 的唯一元素就是这个数组，这也就解释了上面的代码。</p>
+<p>我们使用包装类型数组就可以解决这个问题。</p>
+<ul>
+<li>&#96;&#96;&#96;java<br>Integer[] myArray &#x3D; {1, 2, 3};<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- **使用集合的修改方法: `add()`、`remove()`、`clear()`会抛出异常。**</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">List myList = Arrays.asList(1, 2, 3);</span><br><span class="line">myList.add(4);//运行时报错：UnsupportedOperationException</span><br><span class="line">myList.remove(1);//运行时报错：UnsupportedOperationException</span><br><span class="line">myList.clear();//运行时报错：UnsupportedOperationException</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><code>Arrays.asList()</code> 方法返回的并不是 <code>java.util.ArrayList</code> ，而是 <code>java.util.Arrays</code> 的一个内部类,这个内部类并没有实现集合的修改方法或者说并没有重写这些方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">List</span> <span class="variable">myList</span> <span class="operator">=</span> Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">System.out.println(myList.getClass());<span class="comment">//class java.util.Arrays$ArrayList</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>那我们如何正确的将数组转换为 <code>ArrayList</code> ?</strong></p>
+<ul>
+<li>手动实现工具类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JDK1.5+</span></span><br><span class="line"><span class="keyword">static</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">arrayToList</span><span class="params">(<span class="keyword">final</span> T[] array)</span> &#123;</span><br><span class="line">  <span class="keyword">final</span> List&lt;T&gt; l = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;T&gt;(array.length);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> T s : array) &#123;</span><br><span class="line">    l.add(s);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line">Integer [] myArray = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line">System.out.println(arrayToList(myArray).getClass());<span class="comment">//class java.util.ArrayList</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>最简便的方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>- </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/java%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" data-id="cl5kjvtc40009us8bh9f6ey7y" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-json使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/json%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.046Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="json在前后端数据交互的应用"><a href="#json在前后端数据交互的应用" class="headerlink" title="json在前后端数据交互的应用"></a>json在前后端数据交互的应用</h1><p><strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38682952/article/details/78905233">(4条消息) json在前后端数据交互中的应用_逗逗大魔王的博客-CSDN博客</a></strong></p>
+<h2 id="一、什么是json？"><a href="#一、什么是json？" class="headerlink" title="一、什么是json？"></a>一、什么是json？</h2><p>由于后端可能会传各种各样的数据来适应前端，因此需要json来转换（json本来是javascript的内容），用它来表示各种各样复杂的数据，如对象，数组，集合，以及集合的集合等数据。</p>
+<p>json是一种轻量级的前端后端以及网络传输的数据交换格式，就是一串字符串，只不过元素会使用特定的符号标注。 {} 双括号表示对象，[] 中括号表示数组，”” 双引号内是属性或值，: 冒号表示后者是前者的值(这个值可以是字符串、数字、也可以是另一个数组或对象)。也就是说在后端可以把一个字符串，然后通过json来转换成特定的字符串传到前端去。</p>
+<h2 id="二、为什么要使用json"><a href="#二、为什么要使用json" class="headerlink" title="二、为什么要使用json"></a>二、为什么要使用json</h2><ul>
+<li><strong>数据格式比较简单, 易于读写, 格式都是压缩的, 占用带宽小，其可读性也不错，基本具备了结构化数据的性质。</strong></li>
+<li><strong>易于解析这种语言, 客户端JavaScript可以简单的通过eval()进行JSON数据的解析，通过遍历数组以及访问对象属性来获取数据</strong></li>
+<li><strong>因为JSON格式能够直接为服务器端代码使用, 大大简化了服务器端和客户端的代码开发量, 且易于维护，语言无关，任何语言都能轻松搞它，类型安全，值是有类型的，比如整数、字符串、布尔等。</strong></li>
+</ul>
+<h2 id="三、常见的一些json格式"><a href="#三、常见的一些json格式" class="headerlink" title="三、常见的一些json格式"></a>三、常见的一些json格式</h2><h3 id="1、一个JSON对象——-JSONObject"><a href="#1、一个JSON对象——-JSONObject" class="headerlink" title="1、一个JSON对象——-JSONObject"></a>1、一个JSON对象——-JSONObject</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">简单点的：<span class="keyword">var</span> json=&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;张三&quot;</span> , <span class="string">&quot;age&quot;</span>:<span class="number">18</span> &#125;;</span><br><span class="line"></span><br><span class="line">复杂一点的：<span class="keyword">var</span> json=&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;张三&quot;</span>, <span class="string">&quot;age&quot;</span>=<span class="number">18</span>，<span class="string">&quot;address&quot;</span>:&#123;<span class="string">&quot;street&quot;</span>:<span class="string">&quot;湖南&quot;</span>, <span class="string">&quot;city&quot;</span>:长沙<span class="string">&quot;,&quot;</span>country<span class="string">&quot;:&quot;</span>中国<span class="string">&quot;&#125;&#125;；</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、一个JSON数组——-JSONArray"><a href="#2、一个JSON数组——-JSONArray" class="headerlink" title="2、一个JSON数组——-JSONArray"></a>2、一个JSON数组——-JSONArray</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">简单点的：</span><br><span class="line"><span class="keyword">var</span> json=[&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;张三&quot;</span> , <span class="string">&quot;age&quot;</span>:<span class="number">18</span> &#125;,&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;李四&quot;</span> , <span class="string">&quot;age&quot;</span>:<span class="number">20</span> &#125;];</span><br><span class="line"></span><br><span class="line">复杂一点的：</span><br><span class="line">[</span><br><span class="line">&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;张三&quot;</span>, <span class="string">&quot;age&quot;</span>=<span class="number">18</span>,  <span class="string">&quot;address&quot;</span>:&#123;<span class="string">&quot;street&quot;</span>:<span class="string">&quot;湖南&quot;</span>, <span class="string">&quot;city&quot;</span>:<span class="string">&quot;长沙&quot;</span>,<span class="string">&quot;country&quot;</span>:<span class="string">&quot;中国&quot;</span>&#125;&#125;,</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;李四&quot;</span>, <span class="string">&quot;age&quot;</span>=<span class="number">20</span>,  <span class="string">&quot;address&quot;</span>:&#123;<span class="string">&quot;street&quot;</span>:<span class="string">&quot;湖南&quot;</span>, <span class="string">&quot;city&quot;</span>:<span class="string">&quot;张家界&quot;</span>,<span class="string">&quot;country&quot;</span>:<span class="string">&quot;中国&quot;</span>&#125;&#125;</span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-还有一种结构"><a href="#3-还有一种结构" class="headerlink" title="3.还有一种结构"></a>3.还有一种结构</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> json=&#123;<span class="string">&quot;abc&quot;</span>:[&#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;txt1&quot;</span>&#125;,&#123;<span class="string">&quot;name&quot;</span>,<span class="string">&quot;txt2&quot;</span>&#125;]&#125;;</span><br><span class="line"><span class="comment">//这里的json.abc是一个数组，数组是由2个子json组成的</span></span><br><span class="line"></span><br><span class="line">遍历(后面不在讲这种结构）</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;json1.<span class="property">abc</span>.<span class="property">length</span>;i++)&#123;<span class="title function_">alert</span>(json1.<span class="property">abc</span>[i].<span class="property">name</span>);&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>里面的是一个对象{}，如果是多个对象，则用逗号间隔，即{},{}，这样就组成了一个对象序列，为了辨别开始和结束，则需要加上[]才能进行传递，则实际传递的形式应该是[{},{}]，如果只要传递一个对象，则{}的形式就可以了。</strong></p>
+<h2 id="四、json在前端-js-应用"><a href="#四、json在前端-js-应用" class="headerlink" title="四、json在前端(js)应用"></a>四、json在前端(js)应用</h2><p><strong>后端将数据处理成json格式，前端就通过ajax来接收数据，并eval()或者json.prase(data)解析，循环遍历，展现在页面上。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$  .<span class="title function_">ajax</span>(&#123;</span><br><span class="line">                        url : <span class="string">&quot;myfileAction&quot;</span>,</span><br><span class="line">                        dataType : <span class="string">&quot;json&quot;</span>,</span><br><span class="line">                        type : <span class="string">&quot;post&quot;</span>,</span><br><span class="line">                        success : <span class="keyword">function</span>(<span class="params">data</span>) &#123;</span><br><span class="line">                        &#125;</span><br><span class="line">                        &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="第一步，接收数据"><a href="#第一步，接收数据" class="headerlink" title="第一步，接收数据"></a><strong>第一步，接收数据</strong></h3><p><strong>用ajax来接收后端发来的数据，简单说下ajax，ajax是一种用于快速创建动态网页的技术。通过在后台与服务器进行少量数据交换，ajax就可以使网页实现异步更新。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。而传统的网页（不使用ajax）如果需要更新内容，必须重载整个网页面。<br>type: “POST”, &#x2F;&#x2F;请求的方式，也有get请求<br>url: “myfileAction”, &#x2F;&#x2F;请求地址，后台提供的,填写具体action，也就是struts.xml文件中action名字。<br>data: {name:name},&#x2F;&#x2F;data是传给后台的json字段，后台需要哪些就传入哪些，这里是接收数据，所以可以不用写。<br>dataType: “json”, &#x2F;&#x2F;json格式，后台返回的数据为json格式的。</strong></p>
+<h3 id="第二步，解析数据"><a href="#第二步，解析数据" class="headerlink" title="第二步，解析数据"></a><strong>第二步，解析数据</strong></h3><p><strong>前后台传输的时候其实是字符串，解析是把json字符串重新变成json类型的对象。</strong></p>
+<p><strong>json字符串转换成json对象</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="built_in">eval</span>(<span class="string">&#x27;(&#x27;</span> + data + <span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">或者 <span class="keyword">var</span> obj = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(data);  </span><br></pre></td></tr></table></figure>
+
+<p><strong>区别：eval方法不会去检查给的字符串时候符合json的格式，同时如果给的字符串中存在js代码eval也会一并执行。相比而言eval()不安全，建议用JSON.parse。</strong></p>
+<p><strong>json对象转为json字符串</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(person);</span><br></pre></td></tr></table></figure>
+
+<p><strong>前端传入后台的应该是一个json格式的字符串，而不是一个json对象，所以这个也有用的。<br>讲到这里简单提下发送数据吧。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;  </span><br><span class="line">    $(<span class="variable language_">document</span>).<span class="title function_">ready</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;  </span><br><span class="line">        <span class="keyword">var</span> saveDataAry=[];  </span><br><span class="line">        <span class="keyword">var</span> data1=&#123;<span class="string">&quot;userName&quot;</span>:<span class="string">&quot;zhangsan&quot;</span>,<span class="string">&quot;address&quot;</span>:<span class="string">&quot;bj&quot;</span>&#125;;  </span><br><span class="line">        <span class="keyword">var</span> data2=&#123;<span class="string">&quot;userName&quot;</span>:<span class="string">&quot;lisi&quot;</span>,<span class="string">&quot;address&quot;</span>:<span class="string">&quot;nj&quot;</span>&#125;;  </span><br><span class="line">        saveDataAry.<span class="title function_">push</span>(data1);  </span><br><span class="line">        saveDataAry.<span class="title function_">push</span>(data2);         </span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123; </span><br><span class="line">            <span class="attr">type</span>:<span class="string">&quot;POST&quot;</span>, </span><br><span class="line">            <span class="attr">url</span>:<span class="string">&quot;user/saveUser&quot;</span>, </span><br><span class="line">            <span class="attr">dataType</span>:<span class="string">&quot;json&quot;</span>,      </span><br><span class="line">            <span class="attr">contentType</span>:<span class="string">&quot;application/json&quot;</span>,               </span><br><span class="line">            <span class="attr">data</span>:<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(saveData), </span><br><span class="line">            <span class="attr">success</span>:<span class="keyword">function</span>(<span class="params">data</span>)&#123; </span><br><span class="line"></span><br><span class="line">            &#125; </span><br><span class="line">         &#125;); </span><br><span class="line">    &#125;);  </span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ajax请求的时候也要指定dataType:“json”,contentType:”application&#x2F;json” 这样就可以轻易的将一个对象或者List传到后端。</strong></p>
+<h3 id="第三步，数据遍历"><a href="#第三步，数据遍历" class="headerlink" title="第三步，数据遍历"></a><strong>第三步，数据遍历</strong></h3><p><strong>可以通过jQuery的$.each()方法遍历输出，举个例子</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [&#123; <span class="attr">name</span>: <span class="string">&quot;john&quot;</span>, <span class="attr">lang</span>: <span class="string">&quot;js&quot;</span> &#125;,&#123; <span class="attr">name</span>: <span class="string">&quot;张三&quot;</span>, <span class="attr">lang</span>: <span class="string">&quot;ext&quot;</span> &#125;];   </span><br><span class="line">  $.<span class="title function_">each</span>( arr, <span class="keyword">function</span>(<span class="params">index, content</span>)  </span><br><span class="line">  &#123;   </span><br><span class="line">   <span class="title function_">alert</span>( <span class="string">&quot;the man&#x27;s no. is: &quot;</span> + index + <span class="string">&quot;,and &quot;</span> + content.<span class="property">name</span> + <span class="string">&quot; is learning &quot;</span> + content.<span class="property">lang</span> );   </span><br><span class="line">  &#125;);  </span><br></pre></td></tr></table></figure>
+
+<p><strong>如果声明的是字符串，var arr&#x3D;’[]’这样类型，那么遍历的时候应该先用json.parse()或者jquery的方法$.parseJSON将字符串转化为对象。</strong></p>
+<p><strong>还有一种是for循环遍历</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;arr.<span class="property">length</span>; i++)  </span><br><span class="line">&#123;  </span><br><span class="line">   <span class="title function_">alert</span>(arr[i].<span class="property">name</span>+<span class="string">&quot; &quot;</span> + arr[i].<span class="property">value</span>)  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//取arr数组里一个叫name的值，比如上面name后面值是张三，就取出张三</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="五、json在后端上的应用"><a href="#五、json在后端上的应用" class="headerlink" title="五、json在后端上的应用"></a>五、json在后端上的应用</h2><p><strong>在后端action里要导入 net.sf.json.JSONObject这个包。</strong></p>
+<h3 id="第一步，有几种后端数据封装成json数据格式"><a href="#第一步，有几种后端数据封装成json数据格式" class="headerlink" title="第一步，有几种后端数据封装成json数据格式"></a><strong>第一步，有几种后端数据封装成json数据格式</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1.List集合转换成json代码</span><br><span class="line">　List list = new ArrayList();</span><br><span class="line">　list.add( “first” );</span><br><span class="line">　list.add( “second” );</span><br><span class="line">　JSONArray jsonArray = JSONArray.fromObject( list );</span><br><span class="line">2. Map集合转换成json代码</span><br><span class="line">　Map map = new HashMap();</span><br><span class="line">　map.put(“name”, “json”);</span><br><span class="line">　map.put(“bool”, Boolean.TRUE);</span><br><span class="line">　map.put(“int”, new Integer(1));</span><br><span class="line">　map.put(“arr”, new String[] &#123; “a”, “b” &#125;);</span><br><span class="line">　map.put(“func”, “function(i)&#123; return this.arr[i]; &#125;”);</span><br><span class="line">　JSONObject json = JSONObject.fromObject(map);</span><br><span class="line">3.Bean转换成json代码</span><br><span class="line">　　JSONObject jsonObject = JSONObject.fromObject(new JsonBean());</span><br><span class="line">4. 数组转换成json代码</span><br><span class="line">　boolean[] boolArray = new boolean[] &#123; true, false, true &#125;;</span><br><span class="line">　　JSONArray jsonArray1 = JSONArray.fromObject(boolArray);</span><br><span class="line">5. 一般数据转换成json代码</span><br><span class="line">JSONArray jsonArray =JSONArray.fromObject([‘json’,’is’,’easy’]” );</span><br><span class="line">6.用json put方法</span><br><span class="line">JSONObject json=new JSONObject();</span><br><span class="line">json.put(“name”, “张三”);</span><br><span class="line">json.put(“age”, 18);</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步，给你一个Struts-2的struts-xml中配置json类型result"><a href="#第二步，给你一个Struts-2的struts-xml中配置json类型result" class="headerlink" title="第二步，给你一个Struts 2的struts.xml中配置json类型result"></a><strong>第二步，给你一个Struts 2的struts.xml中配置json类型result</strong></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;package name=<span class="string">&quot;json&quot;</span> <span class="keyword">extends</span>=<span class="string">&quot;json-default&quot;</span> &gt;  </span><br><span class="line"></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">action</span> <span class="attr">name</span>=<span class="string">&quot;***Action&quot;</span>  </span></span></span><br><span class="line"><span class="tag"><span class="language-xml">   <span class="attr">class</span>=<span class="string">&quot;action.UserAction&quot;</span> <span class="attr">method</span>=<span class="string">&quot;add&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml">   <span class="tag">&lt;<span class="name">result</span> <span class="attr">type</span>=<span class="string">&quot;json&quot;</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml">                <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;root&quot;</span>&gt;</span>result<span class="tag">&lt;/<span class="name">param</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">result</span>&gt;</span>  </span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">action</span>&gt;</span></span>  </span><br><span class="line">&lt;/package&gt;</span><br></pre></td></tr></table></figure>
+
+<param> 这个标签是设置参数的，对于java程序来说，这个标签就相当于定义一个root 变量，将其赋值为map ,前台可以获取使用root这个参数值。
+所以action里要有get，setresult方法，把json字符串值给reslut setResult(json.toString());
+**接收前端提交的数据**
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">String</span> data = request.<span class="title function_">getParameter</span>(<span class="string">&quot;data&quot;</span>);</span><br><span class="line"> <span class="title class_">JSON</span><span class="built_in">Array</span> json=<span class="title class_">JSON</span><span class="built_in">Array</span>.<span class="title function_">fromObject</span>(data);</span><br><span class="line"><span class="title class_">JSON</span><span class="built_in">Object</span> jsonOne;</span><br><span class="line">  <span class="title class_">Map</span>&lt;<span class="title class_">String</span>,<span class="title class_">String</span>&gt; map=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(int i=<span class="number">0</span>;i&lt;json.<span class="title function_">size</span>();i++)&#123;</span><br><span class="line">           updataMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;<span class="title class_">String</span>,<span class="title class_">String</span>&gt;();</span><br><span class="line">           jsonOne = json.<span class="title function_">getJSONObject</span>(i); </span><br><span class="line">           map.<span class="title function_">put</span>(<span class="string">&quot;name&quot;</span>, (<span class="title class_">String</span>) jsonOne.<span class="title function_">get</span>(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">           map.<span class="title function_">put</span>(<span class="string">&quot;age&quot;</span>, (<span class="title class_">String</span>) jsonOne.<span class="title function_">get</span>(<span class="string">&quot;age&quot;</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/json%E4%BD%BF%E7%94%A8/" data-id="cl5kjvtc5000bus8b8uz34j01" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-AppConfig" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/AppConfig/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.036Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="C-配置文件App-config的使用操作"><a href="#C-配置文件App-config的使用操作" class="headerlink" title="C# 配置文件App.config的使用操作"></a>C# 配置文件App.config的使用操作</h1><p>​		应用程序配置文件是标准的 XML 文件，XML 标记和属性是区分大小写的。它是可以按需要更改的，开发人员可以使用配置文件来更改设置，而不必重编译应用程序。<br>​		配置文件的根节点是configuration。我们经常访问的是appSettings，它是由.Net预定义配置节。我们经常使用的配置文件的架构是象下面的形式。</p>
+<h2 id="向项目添加-app-config-文件："><a href="#向项目添加-app-config-文件：" class="headerlink" title="向项目添加 app.config 文件："></a>向项目添加 app.config 文件：</h2><p>​	右击项目名称，选择“添加”→“添加新建项”，在出现的“添加新项”对话框中，选择“添加应用程序配置文件”；如果项目以前没有配置文件，则默认的文件名称为“ app.config ”，单击“确定”。出现在设计器视图中的app.config 文件为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;? xml version = &quot;1.0 &quot;encoding = &quot;utf-8 &quot; ?&gt;</span><br><span class="line">&lt; configuration &gt;</span><br><span class="line">&lt;/ configuration &gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20170904173240732" alt="img"></p>
+<p>在项目进行编译后，在 bin&#x2F;Debug 文件下，将出现两个配置文件 ( 以本项目为例 ) ，一个名为“Demo.EXE.config ”，另一个名为“ Demo.vshost.exe.config ”。第一个文件为项目实际使用的配置文件，在程序运行中所做的更改都将被保存于此；第二个文件为原代码“ app.config ”的同步文件，在程序运行中不会发生更改。<br><img src="https://img-blog.csdn.net/20170904173254243" alt="img"></p>
+<h2 id="App-config配置文件的简单使用"><a href="#App-config配置文件的简单使用" class="headerlink" title="App.config配置文件的简单使用"></a>App.config配置文件的简单使用</h2><h3 id="向App-config配置文件添加参数"><a href="#向App-config配置文件添加参数" class="headerlink" title="向App.config配置文件添加参数"></a><strong>向App.config配置文件添加参数</strong></h3><p><img src="https://img-blog.csdn.net/20170904173513521" alt="img">	</p>
+<h3 id="添加System-Configuration引用"><a href="#添加System-Configuration引用" class="headerlink" title="添加System.Configuration引用"></a><strong>添加System.Configuration引用</strong></h3><h3 id="访问App-config配置文件中的参数值"><a href="#访问App-config配置文件中的参数值" class="headerlink" title="访问App.config配置文件中的参数值"></a><strong>访问App.config配置文件中的参数值</strong></h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Xml;</span><br><span class="line"><span class="keyword">using</span> System.Configuration;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Demo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">string</span> serverIP = ConfigurationManager.AppSettings[<span class="string">&quot;ServerIP&quot;</span>];</span><br><span class="line">            <span class="built_in">string</span> dataBase = ConfigurationManager.AppSettings[<span class="string">&quot;DataBase&quot;</span>];</span><br><span class="line">            <span class="built_in">string</span> user = ConfigurationManager.AppSettings[<span class="string">&quot;user&quot;</span>];</span><br><span class="line">            <span class="built_in">string</span> password = ConfigurationManager.AppSettings[<span class="string">&quot;password&quot;</span>];</span><br><span class="line">            Console.WriteLine(serverIP);</span><br><span class="line">            Console.WriteLine(dataBase);</span><br><span class="line">            Console.WriteLine(user);</span><br><span class="line">            Console.WriteLine(password);</span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>结果如下</strong></p>
+<p><img src="https://img-blog.csdn.net/20170904174459343" alt="img">	</p>
+<p>但是要想调用ConfigurationManager必须要先在工程里添加system.configuration程序集的引用。<br>（在解决方案管理器中右键点击工程名称，在右键菜单中选择添加引用，.net 标签页下即可找到）</p>
+<p><img src="https://img-blog.csdn.net/20170904174414928" alt="img">	</p>
+<h3 id="获取-App-config配置文件中-所有Key的Value集合"><a href="#获取-App-config配置文件中-所有Key的Value集合" class="headerlink" title="获取 App.config配置文件中 所有Key的Value集合"></a>获取 App.config配置文件中 所有Key的Value集合</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 所有的Key遍历出后保存在一个容器里(例如：数组),然后用Key匹配找出Value即可</span></span><br><span class="line">      <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">      &#123;</span><br><span class="line">          <span class="comment">//判断App.config配置文件中是否有Key(非null) </span></span><br><span class="line">          <span class="keyword">if</span> (ConfigurationManager.AppSettings.HasKeys())</span><br><span class="line">          &#123;</span><br><span class="line">              List&lt;<span class="built_in">string</span>&gt; theKeys = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;(); <span class="comment">//保存Key的集合 </span></span><br><span class="line">              List&lt;<span class="built_in">string</span>&gt; theValues = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;(); <span class="comment">//保存Value的集合 </span></span><br><span class="line">              <span class="comment">//遍历出所有的Key并添加进theKeys集合 </span></span><br><span class="line">              <span class="keyword">foreach</span> (<span class="built_in">string</span> theKey <span class="keyword">in</span> ConfigurationManager.AppSettings.Keys)</span><br><span class="line">              &#123;</span><br><span class="line">                  theKeys.Add(theKey);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="comment">//根据Key遍历出所有的Value并添加进theValues集合 </span></span><br><span class="line">              <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; theKeys.Count; i++)</span><br><span class="line">              &#123;</span><br><span class="line">                  <span class="keyword">foreach</span> (<span class="built_in">string</span> theValue <span class="keyword">in</span> ConfigurationManager.AppSettings.GetValues(theKeys[i]))</span><br><span class="line">                  &#123;</span><br><span class="line">                      theValues.Add(theValue);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="comment">//验证一下 </span></span><br><span class="line">              Console.WriteLine(<span class="string">&quot;*************Key*************&quot;</span>);</span><br><span class="line">              <span class="keyword">foreach</span> (<span class="built_in">string</span> s <span class="keyword">in</span> theKeys)</span><br><span class="line">              &#123;</span><br><span class="line">                  Console.WriteLine(s);</span><br><span class="line">              &#125;</span><br><span class="line">              Console.WriteLine(<span class="string">&quot;************Value************&quot;</span>);</span><br><span class="line">              <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> theValues)</span><br><span class="line">              &#123;</span><br><span class="line">                  Console.WriteLine(item);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          Console.ReadKey();</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdn.net/20170904175218228" alt="img">	</p>
+<h3 id="App-config配置文件的修改及保存"><a href="#App-config配置文件的修改及保存" class="headerlink" title="App.config配置文件的修改及保存"></a>App.config配置文件的修改及保存</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);  </span><br><span class="line">config.AppSettings.Settings[<span class="string">&quot;user&quot;</span>].Value = <span class="string">&quot;demo&quot;</span>;  </span><br><span class="line">config.Save(ConfigurationSaveMode.Full);  </span><br></pre></td></tr></table></figure>
+
+<p>原文位置：<a target="_blank" rel="noopener" href="https://blog.csdn.net/e295166319/article/details/77839798">(3条消息) C# 配置文件App.config的使用操作_起个名字好难啊-CSDN博客_app.config</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/AppConfig/" data-id="cl5kjvtbn0000us8b4yrd86ix" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-C#" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/C#/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.036Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="C"><a href="#C" class="headerlink" title="C#"></a>C#</h1><h3 id="MemoryStream"><a href="#MemoryStream" class="headerlink" title="MemoryStream"></a>MemoryStream</h3><p>MemoryStream 是类创建以内存而不是磁盘或网络连接作为支持存储区。封装以无符号字节数组形式存储的数据，该数组在创建 MemoryStream 对象时被初始化，或者该数组可创建为空数组。可在内存中直接访问这些封装的数据。</p>
+<h2 id="视屏数据的读取与转发"><a href="#视屏数据的读取与转发" class="headerlink" title="视屏数据的读取与转发"></a>视屏数据的读取与转发</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Net;</span><br><span class="line"><span class="keyword">using</span> System.Net.Sockets;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Test1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            UdpClient UDPsend = <span class="keyword">new</span> UdpClient(<span class="keyword">new</span> IPEndPoint(IPAddress.Any, <span class="number">0</span>));</span><br><span class="line">            IPEndPoint endpoint = <span class="keyword">new</span> IPEndPoint(IPAddress.Broadcast, <span class="number">1235</span>);</span><br><span class="line">            Stream st = File.OpenRead(<span class="string">&quot;C:/Users/ZQY/Desktop/sunxiangtian.ts&quot;</span>);</span><br><span class="line">            <span class="built_in">byte</span>[] arr = <span class="keyword">new</span> <span class="built_in">byte</span>[st.Length];</span><br><span class="line">            <span class="built_in">int</span> offset = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            FileStream ffstream = <span class="keyword">new</span> FileStream(<span class="string">@&quot;D:\test-raw-&quot;</span> + DateTime.Now.ToString(<span class="string">&quot;yyyyMMddmm&quot;</span>) + <span class="string">&quot;.dat&quot;</span>, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (offset &lt; st.Length)</span><br><span class="line">            &#123;</span><br><span class="line">                offset += st.Read(arr, offset, arr.Length - offset);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//byte[] buf = Encoding.Default.GetBytes(&quot;This is UDP broadcast&quot;);</span></span><br><span class="line">            Thread receThread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> ThreadStart(RecvThread));</span><br><span class="line">            receThread.IsBackground = <span class="literal">true</span>;</span><br><span class="line">            receThread.Start();</span><br><span class="line">            <span class="built_in">int</span> totalsize = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; arr.Length;)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">byte</span>[] buff = <span class="keyword">new</span> <span class="built_in">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    Buffer.BlockCopy(arr, i, buff, <span class="number">0</span>, <span class="number">1024</span>);</span><br><span class="line">                    <span class="comment">//client.Send(buff, buff.Length, endpoint);</span></span><br><span class="line">                    UDPsend.Send(buff,buff.Length, endpoint);</span><br><span class="line">                    i += <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span>(totalsize&lt;= <span class="number">1</span> * <span class="number">1024</span> * <span class="number">1024</span>)</span><br><span class="line">                    &#123; </span><br><span class="line">                         ffstream.Write(buff,<span class="number">0</span>, buff.Length);</span><br><span class="line">                         totalsize += buff.Length;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                    &#123;</span><br><span class="line">                       </span><br><span class="line">                        <span class="comment">//break;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                    Thread.Sleep(<span class="number">10</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                ffstream.Close();</span><br><span class="line">                <span class="comment">//               UDPsend.Send(buf, buf.Length, endpoint);</span></span><br><span class="line">                <span class="comment">//           Thread.Sleep(1000);</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RecvThread</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            FileStream stream = <span class="keyword">new</span> FileStream(<span class="string">@&quot;D:\VlcUdpSendtest.dat&quot;</span>, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);</span><br><span class="line">            UdpClient UDPrece = <span class="keyword">new</span> UdpClient(<span class="keyword">new</span> IPEndPoint(IPAddress.Any, <span class="number">1234</span>));</span><br><span class="line">            IPEndPoint endpoint = <span class="keyword">new</span> IPEndPoint(IPAddress.Any, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">byte</span>[] buf = UDPrece.Receive(<span class="keyword">ref</span> endpoint);</span><br><span class="line">                <span class="built_in">string</span> msg = Encoding.Default.GetString(buf);</span><br><span class="line">                Console.WriteLine(msg);</span><br><span class="line">                stream.Write(buf, <span class="number">0</span>, buf.Length);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="在C-中添加listView"><a href="#在C-中添加listView" class="headerlink" title="在C#中添加listView"></a>在C#中添加listView</h1><h3 id="首先在工具中添加listview控件，然后再空的的设置中将勾选框调出来"><a href="#首先在工具中添加listview控件，然后再空的的设置中将勾选框调出来" class="headerlink" title="首先在工具中添加listview控件，然后再空的的设置中将勾选框调出来"></a>首先在工具中添加listview控件，然后再空的的设置中将勾选框调出来</h3><p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210927183557374.png" alt="image-20210927183557374"></p>
+<h3 id="建立子窗体，并赋值"><a href="#建立子窗体，并赋值" class="headerlink" title="建立子窗体，并赋值"></a>建立子窗体，并赋值</h3><p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210927183738764.png" alt="image-20210927183738764"></p>
+<h3 id="listview控件操作"><a href="#listview控件操作" class="headerlink" title="listview控件操作"></a>listview控件操作</h3><p><strong>首先设置列共512：</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ColumnHeader ch = <span class="keyword">new</span> ColumnHeader();</span><br><span class="line">ch.Text =<span class="string">&quot;&quot;</span>;</span><br><span class="line">ch.TextAlign = HorizontalAlignment.Center;</span><br><span class="line"><span class="keyword">this</span>.listView1.Columns.Add(ch);</span><br></pre></td></tr></table></figure>
+
+<p><strong>然后设置行数共8行：</strong></p>
+<p><strong>其中想要完成网格的更新需要加入BeginUpdate()以及EndUpdate();</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.listView1.BeginUpdate();</span><br><span class="line">          <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">8</span> ; i++)</span><br><span class="line">          &#123;</span><br><span class="line">              ListViewItem item = <span class="keyword">new</span> ListViewItem();</span><br><span class="line">              item.Text = <span class="string">&quot;参数&quot;</span> + (i + <span class="number">1</span>);</span><br><span class="line">              <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">512</span>; j++)</span><br><span class="line">              &#123;</span><br><span class="line">                  item.SubItems.Add( j + <span class="string">&quot;列&quot;</span>);</span><br><span class="line">                  <span class="comment">//item.BackColor=Color.Red;</span></span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">this</span>.listView1.Items.Add(item);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">this</span>.listView1.EndUpdate();</span><br></pre></td></tr></table></figure>
+
+<h3 id="更改特定网格的内容"><a href="#更改特定网格的内容" class="headerlink" title="更改特定网格的内容"></a>更改特定网格的内容</h3><hr>
+<p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210927185039136.png" alt="image-20210927185039136"></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> PCM.Model;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"><span class="keyword">using</span> System.Data;</span><br><span class="line"><span class="keyword">using</span> System.Drawing;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"><span class="keyword">using</span> System.Windows.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">PCM.Platform.Library</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">FrmGridView</span> : <span class="title">Form</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> DataParam param;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">FrmGridView</span>()</span></span><br><span class="line">        &#123;</span><br><span class="line">            InitializeComponent();</span><br><span class="line">        &#125;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">listView1_SelectedIndexChanged</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">treeView_AfterSelect</span>(<span class="params"><span class="built_in">object</span> sender, TreeViewEventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="comment">// treeViewEx1.Nodes.Add();</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*change by zqy*/</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">FrmGridView_Load</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span> ; i &lt;=<span class="number">512</span> ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ColumnHeader ch = <span class="keyword">new</span> ColumnHeader();</span><br><span class="line">                ch.Text =<span class="string">&quot;&quot;</span>;</span><br><span class="line">                ch.TextAlign = HorizontalAlignment.Center;</span><br><span class="line">                <span class="keyword">this</span>.listView1.Columns.Add(ch);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                ColumnHeader ch = <span class="keyword">new</span> ColumnHeader();</span><br><span class="line">                ch.Text = i+<span class="string">&quot;列&quot;</span>;</span><br><span class="line">                ch.TextAlign = HorizontalAlignment.Center;</span><br><span class="line">                <span class="keyword">this</span>.listView1.Columns.Add(ch);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.listView1.BeginUpdate();</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">8</span> ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            ListViewItem item = <span class="keyword">new</span> ListViewItem();</span><br><span class="line">            item.Text = <span class="string">&quot;参数&quot;</span> + (i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">512</span>; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                item.SubItems.Add( j + <span class="string">&quot;列&quot;</span>);</span><br><span class="line">                <span class="comment">//item.BackColor=Color.Red;</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.listView1.Items.Add(item);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.listView1.EndUpdate();</span><br><span class="line">        <span class="comment">/*for (int i = 0; i &lt; 8; i++)</span></span><br><span class="line"><span class="comment">         &#123;</span></span><br><span class="line"><span class="comment">             for (int j = 0; j &lt; 512; j++)</span></span><br><span class="line"><span class="comment">             &#123;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                 if (i == 3 &amp;&amp; j%4==0)</span></span><br><span class="line"><span class="comment">                 &#123;</span></span><br><span class="line"><span class="comment">                     ListViewItem lvi = listView1.Items[i];</span></span><br><span class="line"><span class="comment">                     lvi.UseItemStyleForSubItems = false;</span></span><br><span class="line"><span class="comment">                     listView1.Items[i].BackColor = Color.Blue;</span></span><br><span class="line"><span class="comment">                     listView1.Items[i].SubItems[j].BackColor = Color.Black;</span></span><br><span class="line"><span class="comment">                     listView1.Items[i].SubItems[j].BackColor = Color.Red;</span></span><br><span class="line"><span class="comment">                 &#125;</span></span><br><span class="line"><span class="comment">                          &#125;</span></span><br><span class="line"><span class="comment">         &#125;*/</span></span><br><span class="line">        <span class="built_in">int</span> colorNum = param.segments.Count;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; colorNum; i++)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            ListViewItem lvi = listView1.Items[param.segments[i].startword - <span class="number">1</span>];</span><br><span class="line">            lvi.UseItemStyleForSubItems = <span class="literal">false</span>;</span><br><span class="line">            <span class="comment">//listView1.Items[param.segments[i].length].BackColor = Color.Blue;</span></span><br><span class="line">            listView1.Items[param.segments[i].startword - <span class="number">1</span>].SubItems[param.segments[i].length].BackColor = Color.Black;</span><br><span class="line">            <span class="comment">//listView1.Items[7].SubItems[1].BackColor = Color.Black;</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*this.listView1.UseItemStyleForSubItems = false;</span></span><br><span class="line"><span class="comment">        listView1.Items[0].SubItems[0].BackColor = System.Drawing.Color.Red;*/</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/C#/" data-id="cl5kjvtbu0001us8b8k0qead2" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/14/%E7%BC%96%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%E6%8A%80%E6%9C%AF%E6%89%8B%E5%86%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%20Maven/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Mybatis环境：  JDK 1.8 Mysql 5.7 maven 3.6.1 IDEA  回顾：  JDBC Mysql Java Maven Junit  框架：配置文件！！方式：看官网！！ 网址：mybatis – MyBatis 3 | Introduction 1、简介1.1、什么是Mybatis MyBatis 是一款优秀的（基于java）持久层框架。 它支持自定义 SQL、存储过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/07/14/Mybatis/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Mybatis环境：  JDK 1.8 Mysql 5.7 maven 3.6.1 IDEA  回顾：  JDBC Mysql Java Maven Junit  框架：配置文件！！方式：看官网！！ 网址：mybatis – MyBatis 3 | Introduction 1、简介1.1、什么是Mybatis MyBatis 是一款优秀的（基于java）持久层框架。 它支持自定义 SQL、存储过">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/AppData/Roaming/Typora/typora-user-images/image-20210915190450179.png">
+<meta property="og:image" content="http://example.com/AppData/Roaming/Typora/typora-user-images/image-20210915180708212.png">
+<meta property="og:image" content="http://example.com/AppData/Roaming/Typora/typora-user-images/image-20210915185632253.png">
+<meta property="og:image" content="http://example.com/AppData/Roaming/Typora/typora-user-images/image-20210915190220516.png">
+<meta property="article:published_time" content="2022-07-14T04:47:29.066Z">
+<meta property="article:modified_time" content="2021-09-22T10:40:21.682Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/AppData/Roaming/Typora/typora-user-images/image-20210915190450179.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Mybatis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/Mybatis/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.066Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h1><p>环境：</p>
+<ul>
+<li>JDK 1.8</li>
+<li>Mysql 5.7</li>
+<li>maven 3.6.1</li>
+<li>IDEA</li>
+</ul>
+<p>回顾：</p>
+<ul>
+<li>JDBC</li>
+<li>Mysql</li>
+<li>Java</li>
+<li>Maven</li>
+<li>Junit</li>
+</ul>
+<p>框架：配置文件！！方式：看官网！！ 网址：<a target="_blank" rel="noopener" href="https://mybatis.org/mybatis-3/">mybatis – MyBatis 3 | Introduction</a></p>
+<h1 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h1><h2 id="1-1、什么是Mybatis"><a href="#1-1、什么是Mybatis" class="headerlink" title="1.1、什么是Mybatis"></a>1.1、什么是Mybatis</h2><ul>
+<li>MyBatis 是一款优秀的（基于java）<strong>持久层框架</strong>。</li>
+<li>它支持自定义 SQL、存储过程以及高级映射。</li>
+<li>MyBatis 免除了几乎所有的 JDBC 代码以及设置参数和获取结果集的工作。</li>
+<li>MyBatis 可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Old Java Objects，普通老式 Java 对象）为数据库中的记录。</li>
+<li>MyBatis 本是apache的一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/3406069">开源项目</a>iBatis, 2010年这个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%A1%B9%E7%9B%AE/477803">项目</a>由apache software foundation 迁移到了[google code](<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/google">https://baike.baidu.com/item/google</a> code&#x2F;2346604)，并且改名为MyBatis 。</li>
+<li>2013年11月迁移到<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Github/10145341">Github</a>。</li>
+</ul>
+<p>如何获得Mybatis</p>
+<ul>
+<li>maven仓库：<a target="_blank" rel="noopener" href="https://mvnrepository.com/">Maven Repository: Search&#x2F;Browse&#x2F;Explore (mvnrepository.com)</a></li>
+</ul>
+<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis</artifactId>
+    <version>3.5.6</version>
+</dependency>
+
+<ul>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/mybatis/mybatis-3/releases">Releases · mybatis&#x2F;mybatis-3 (github.com)</a></li>
+<li>中文文档：<a target="_blank" rel="noopener" href="https://mybatis.org/mybatis-3/zh/index.html">mybatis – MyBatis 3 | 简介</a></li>
+</ul>
+<h2 id="1-2、持久化"><a href="#1-2、持久化" class="headerlink" title="1.2、持久化"></a>1.2、持久化</h2><p>数据持久化</p>
+<ul>
+<li>持久化就是将程序的数据在持久状态和瞬时状态转化的过程</li>
+<li>内存：<strong>断电即失</strong></li>
+<li>数据库(jdbc)，io文件持久化</li>
+</ul>
+<p><strong>为什么需要持久化？</strong></p>
+<ul>
+<li><p>有一些对象，不能让他丢掉</p>
+</li>
+<li><p>内存太贵</p>
+</li>
+</ul>
+<h2 id="1-3、持久层"><a href="#1-3、持久层" class="headerlink" title="1.3、持久层"></a>1.3、持久层</h2><p>Dao层，Service层，Controller层……</p>
+<ul>
+<li>完成持久化工作的代码块</li>
+<li>层界限十分明显</li>
+</ul>
+<h2 id="1-4、为什么需要Mybatis？"><a href="#1-4、为什么需要Mybatis？" class="headerlink" title="1.4、为什么需要Mybatis？"></a>1.4、为什么需要Mybatis？</h2><ul>
+<li>帮助程序员将数据存入到数据库中</li>
+<li>方便</li>
+<li>传统的JDBC代码太复杂了。简化。框架。自动化。</li>
+<li>不用Mybatis也可以。更容易上手。</li>
+</ul>
+<h1 id="2、创建Mybatis程序"><a href="#2、创建Mybatis程序" class="headerlink" title="2、创建Mybatis程序"></a>2、创建Mybatis程序</h1><p>思路：搭建环境–&gt;导入Mybatis–&gt;编写代码–&gt;测试！</p>
+<h2 id="2-1、搭建环境"><a href="#2-1、搭建环境" class="headerlink" title="2.1、搭建环境"></a>2.1、搭建环境</h2><p>搭建数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE `mybatis`</span><br><span class="line"></span><br><span class="line">USE `mybatis`;</span><br><span class="line">CREATE TABLE `user`(</span><br><span class="line">	`id` INT(<span class="number">20</span>) NOT NULL PRIMARY KEY,</span><br><span class="line">    `name` VARCHAR(<span class="number">30</span>) DEFAULT NULL,</span><br><span class="line">    `pwd` VARCHAR(<span class="number">30</span>) DEFAULT NULL</span><br><span class="line">)ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line">INSERT INTO `user1`(`id`,`name`,`pwd`) VALUE</span><br><span class="line">(<span class="number">1</span>,<span class="string">&#x27;dsas&#x27;</span>,<span class="string">&#x27;12323&#x27;</span>),</span><br><span class="line">(<span class="number">2</span>,<span class="string">&#x27;周清怡&#x27;</span>,<span class="string">&#x27;123456&#x27;</span>),</span><br><span class="line">(<span class="number">3</span>,<span class="string">&#x27;张三&#x27;</span>,<span class="string">&#x27;1232131&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>新建项目</p>
+<ul>
+<li>建一个普通的maven项目</li>
+<li>删除掉src</li>
+</ul>
+<h2 id="2-2、IDEA项目如何链接myBatis数据库"><a href="#2-2、IDEA项目如何链接myBatis数据库" class="headerlink" title="2.2、IDEA项目如何链接myBatis数据库"></a>2.2、IDEA项目如何链接myBatis数据库</h2><ul>
+<li><p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210915190450179.png" alt="image-20210915190450179"></p>
+</li>
+<li><p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210915180708212.png" alt="image-20210915180708212"></p>
+</li>
+<li><p><strong>由于mysql默认时区域当前地区冲突，因此需要更改默认的时区</strong></p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/XiaoCui-blog/p/15020573.html">IDEA连接数据库出现的时区问题：Server returns invalid timezone. Go to ‘Advanced’ tab and set ‘serverTimezone’ property manually解决办法 - 梦想家小崔 - 博客园 (cnblogs.com)</a></p>
+<p><strong>直接连接会发生一下错误</strong></p>
+<p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210915185632253.png" alt="image-20210915185632253"></p>
+<p><strong>出现错误Access denied for user ‘*‘@’localhost’ (using password: YES)的原因是因为阿里云创建的springboot的application里面已经有了对应的配置</strong></p>
+<p><strong>修改策略：</strong></p>
+<ul>
+<li>直接将application.properties删除即可</li>
+<li>或者将application.properties中的内容修改正确，如图</li>
+</ul>
+<p><img src="/../../AppData/Roaming/Typora/typora-user-images/image-20210915190220516.png" alt="image-20210915190220516"></p>
+<h1 id="注解-ConfigurationProperties使用方法"><a href="#注解-ConfigurationProperties使用方法" class="headerlink" title="注解@ConfigurationProperties使用方法"></a>注解@ConfigurationProperties使用方法</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tian874540961/p/12146467.html">注解@ConfigurationProperties使用方法 - 健人雄 - 博客园 (cnblogs.com)</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">spring.datasource.url=jdbc:mysql://127.0.0.1:8888/test?useUnicode=false&amp;autoReconnect=true&amp;characterEncoding=utf-8</span> <span class="string">spring.datasource.username=root</span> <span class="string">spring.datasource.password=root</span> <span class="string">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span> <span class="string">spring.datasource.type=com.alibaba.druid.pool.DruidDataSource</span></span><br></pre></td></tr></table></figure>
+
+<p>可以通过构建一个构造类并@ConfigurationProperties(prefix &#x3D; “spring.datasource”)通过这种方法能够获得,上面配置中的参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;spring.datasource&quot;)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DatasourcePro</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 配置文件中是driver-class-name, 转驼峰命名便可以绑定成</span></span><br><span class="line">    <span class="keyword">private</span> String driverClassName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String type;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUrl</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUrl</span><span class="params">(String url)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.url = url;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUsername</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUsername</span><span class="params">(String username)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getPassword</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setPassword</span><span class="params">(String password)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getDriverClassName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> driverClassName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setDriverClassName</span><span class="params">(String driverClassName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.driverClassName = driverClassName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setType</span><span class="params">(String type)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/config&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ConfigurationPropertiesController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DatasourcePro datasourcePro;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;url&quot;</span>, datasourcePro.getUrl());</span><br><span class="line">        map.put(<span class="string">&quot;userName&quot;</span>, datasourcePro.getUsername());</span><br><span class="line">        map.put(<span class="string">&quot;password&quot;</span>, datasourcePro.getPassword());</span><br><span class="line">        map.put(<span class="string">&quot;className&quot;</span>, datasourcePro.getDriverClassName());</span><br><span class="line">        map.put(<span class="string">&quot;type&quot;</span>, datasourcePro.getType());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后就能够直接通过构造类中方法获得配置对应的内容！！！</p>
+<h1 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h1><p>Lombok能以简单的注解形式来简化java代码，提高开发人员的开发效率。例如开发中经常需要写的javabean，都需要花时间去添加相应的getter&#x2F;setter，也许还要去写构造器、equals等方法，而且需要维护，当属性多时会出现大量的getter&#x2F;setter方法，这些显得很冗长也没有太多技术含量，一旦修改属性，就容易出现忘记修改对应方法的失误。</p>
+<p>Lombok能通过注解的方式，在编译时自动为属性生成构造器、getter&#x2F;setter、equals、hashcode、toString方法。出现的神奇就是在源码中没有getter和setter方法，但是在编译生成的字节码文件中有getter和setter方法。这样就省去了手动重建这些代码的麻烦，使代码看起来更简洁些。</p>
+<p>Lombok的使用跟引用jar包一样，可以在官网（<a target="_blank" rel="noopener" href="https://projectlombok.org/download%EF%BC%89%E4%B8%8B%E8%BD%BDjar%E5%8C%85%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8maven%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96%EF%BC%9A">https://projectlombok.org/download）下载jar包，也可以使用maven添加依赖：</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16.20<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="具体用法："><a href="#具体用法：" class="headerlink" title="具体用法："></a>具体用法：</h2><p>@Data注解在类上，会为类的所有属性自动生成setter&#x2F;getter、equals、canEqual、hashCode、toString方法，如为final属性，则不会为该属性生成setter方法。</p>
+<p>使用Lombok例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.AccessLevel;</span><br><span class="line"><span class="keyword">import</span> lombok.Setter;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.ToString;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataExample</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">  <span class="meta">@Setter(AccessLevel.PACKAGE)</span> <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">double</span> score;</span><br><span class="line">  <span class="keyword">private</span> String[] tags;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ToString(includeFieldNames=true)</span></span><br><span class="line">  <span class="meta">@Data(staticConstructor=&quot;of&quot;)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Exercise</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> T value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果不使用Lombok：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DataExample</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">double</span> score;</span><br><span class="line">  <span class="keyword">private</span> String[] tags;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">DataExample</span><span class="params">(String name)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.name;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.age;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setScore</span><span class="params">(<span class="type">double</span> score)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.score = score;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getScore</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.score;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String[] getTags() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.tags;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTags</span><span class="params">(String[] tags)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.tags = tags;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span> <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;DataExample(&quot;</span> + <span class="built_in">this</span>.getName() + <span class="string">&quot;, &quot;</span> + <span class="built_in">this</span>.getAge() + <span class="string">&quot;, &quot;</span> + <span class="built_in">this</span>.getScore() + <span class="string">&quot;, &quot;</span> + Arrays.deepToString(<span class="built_in">this</span>.getTags()) + <span class="string">&quot;)&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">canEqual</span><span class="params">(Object other)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> other <span class="keyword">instanceof</span> DataExample;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span> <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="built_in">this</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> DataExample)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">DataExample</span> <span class="variable">other</span> <span class="operator">=</span> (DataExample) o;</span><br><span class="line">    <span class="keyword">if</span> (!other.canEqual((Object)<span class="built_in">this</span>)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.getName() == <span class="literal">null</span> ? other.getName() != <span class="literal">null</span> : !<span class="built_in">this</span>.getName().equals(other.getName())) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.getAge() != other.getAge()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (Double.compare(<span class="built_in">this</span>.getScore(), other.getScore()) != <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (!Arrays.deepEquals(<span class="built_in">this</span>.getTags(), other.getTags())) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Override</span> <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> <span class="variable">PRIME</span> <span class="operator">=</span> <span class="number">59</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">long</span> <span class="variable">temp1</span> <span class="operator">=</span> Double.doubleToLongBits(<span class="built_in">this</span>.getScore());</span><br><span class="line">    result = (result*PRIME) + (<span class="built_in">this</span>.getName() == <span class="literal">null</span> ? <span class="number">43</span> : <span class="built_in">this</span>.getName().hashCode());</span><br><span class="line">    result = (result*PRIME) + <span class="built_in">this</span>.getAge();</span><br><span class="line">    result = (result*PRIME) + (<span class="type">int</span>)(temp1 ^ (temp1 &gt;&gt;&gt; <span class="number">32</span>));</span><br><span class="line">    result = (result*PRIME) + Arrays.deepHashCode(<span class="built_in">this</span>.getTags());</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Exercise</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> T value;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Exercise</span><span class="params">(String name, T value)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.name = name;</span><br><span class="line">      <span class="built_in">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Exercise&lt;T&gt; <span class="title function_">of</span><span class="params">(String name, T value)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Exercise</span>&lt;T&gt;(name, value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getValue</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&quot;Exercise(name=&quot;</span> + <span class="built_in">this</span>.getName() + <span class="string">&quot;, value=&quot;</span> + <span class="built_in">this</span>.getValue() + <span class="string">&quot;)&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">canEqual</span><span class="params">(Object other)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> other <span class="keyword">instanceof</span> Exercise;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (o == <span class="built_in">this</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Exercise)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      Exercise&lt;?&gt; other = (Exercise&lt;?&gt;) o;</span><br><span class="line">      <span class="keyword">if</span> (!other.canEqual((Object)<span class="built_in">this</span>)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.getName() == <span class="literal">null</span> ? other.getValue() != <span class="literal">null</span> : !<span class="built_in">this</span>.getName().equals(other.getName())) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.getValue() == <span class="literal">null</span> ? other.getValue() != <span class="literal">null</span> : !<span class="built_in">this</span>.getValue().equals(other.getValue())) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="type">int</span> <span class="variable">PRIME</span> <span class="operator">=</span> <span class="number">59</span>;</span><br><span class="line">      <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">      result = (result*PRIME) + (<span class="built_in">this</span>.getName() == <span class="literal">null</span> ? <span class="number">43</span> : <span class="built_in">this</span>.getName().hashCode());</span><br><span class="line">      result = (result*PRIME) + (<span class="built_in">this</span>.getValue() == <span class="literal">null</span> ? <span class="number">43</span> : <span class="built_in">this</span>.getValue().hashCode());</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Autowired   //自动装配，注入一个定义好的bean。。。自动装配指的就是使用将 Spring 容器中的 bean 自动的和我们需要这个 bean 的类组装在一起。</span><br><span class="line">             //如果不使用则需要JdbcTemplate jdbcTemplate1= new JdbcTemplate();才能获取jdbcTemplate这个类</span><br></pre></td></tr></table></figure>
+
+<p>Druid为监控而生的数据库连接池，它是阿里巴巴开源平台上的一个项目。Druid是Java语言中最好的数据库连接池，Druid能够提供强大的监控和扩展功能.它可以替换DBCP和C3P0连接池。Druid提供了一个高效、功能强大、可扩展性好的数据库连接池。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/Mybatis/" data-id="cl5kjvtby0004us8baegehjdb" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/14/SaseTest/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/14/leecode/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/14/%E7%BC%96%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%E6%8A%80%E6%9C%AF%E6%89%8B%E5%86%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%20Maven/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="springboot+vue本地部署最近完成项目，需要部署到本地，期间遇到了一些问题，最后写下流程以作记录。 springboot打包这块的内容较为简单一般为在pom.xml中加入 12345678910111213141516&lt;build&gt;    &lt;plugins&gt;        &lt;plugin&gt;            &lt;groupId&gt;org.s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="springboot+vue本地部署最近完成项目，需要部署到本地，期间遇到了一些问题，最后写下流程以作记录。 springboot打包这块的内容较为简单一般为在pom.xml中加入 12345678910111213141516&lt;build&gt;    &lt;plugins&gt;        &lt;plugin&gt;            &lt;groupId&gt;org.s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630002308042.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630002350135.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630002713210.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630003424171.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630003747543.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630004000543.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630004035072.png">
+<meta property="article:published_time" content="2022-07-14T04:47:29.086Z">
+<meta property="article:modified_time" content="2022-06-29T16:50:37.459Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220630002308042.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-springboot+vue打包本地部署" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.086Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="springboot-vue本地部署"><a href="#springboot-vue本地部署" class="headerlink" title="springboot+vue本地部署"></a>springboot+vue本地部署</h1><p>最近完成项目，需要部署到本地，期间遇到了一些问题，最后写下流程以作记录。</p>
+<h2 id="springboot打包"><a href="#springboot打包" class="headerlink" title="springboot打包"></a>springboot打包</h2><p><strong>这块的内容较为简单一般为在<code>pom.xml</code>中加入</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.22.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">skipTests</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipTests</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>让项目在打包时，后续出现”<code>xx.jar</code>中没有主清单属性的解决办法”。</p>
+<p>之后直接点击图中的<code>package</code>就可完成后端打包</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630002308042.png" alt="image-20220630002308042"></p>
+<p>此时就可在对应的文件夹中看到生成的包</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630002350135.png" alt="image-20220630002350135"></p>
+<p>然后只需要在目录栏中输入<code>cmd</code>，命令提示符进入对应的目录，</p>
+<p><code>java -jar xxx.jar</code> (可打出第一个字母tab补全)</p>
+<p>至此后端项目就完成了</p>
+<h2 id="前端vue部署"><a href="#前端vue部署" class="headerlink" title="前端vue部署"></a>前端vue部署</h2><p>首先在项目根目录下创建<code>vue.config.js</code>文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">publicPath</span>: <span class="string">&#x27;./&#x27;</span>, <span class="comment">// 部署应用包时的基本 url</span></span><br><span class="line"><span class="attr">outputDir</span>: <span class="string">&#x27;dist&#x27;</span>, <span class="comment">// build 构建文件目录</span></span><br><span class="line"><span class="attr">assetsDir</span>: <span class="string">&#x27;static&#x27;</span>, <span class="comment">// 静态资源目录</span></span><br><span class="line"><span class="attr">lintOnSave</span>: process.<span class="property">env</span>.<span class="property">NODE_ENV</span> === <span class="string">&#x27;development&#x27;</span>, <span class="comment">// 仅在开发模式下进行 eslint 检测代码</span></span><br><span class="line"><span class="attr">productionSourceMap</span>: <span class="literal">false</span>, <span class="comment">// 禁用生产环境的 source map</span></span><br><span class="line"><span class="attr">runtimeCompiler</span>: <span class="literal">true</span>, <span class="comment">// 是否运行时组件中使用 template</span></span><br><span class="line"><span class="attr">devServer</span>: &#123;</span><br><span class="line">  <span class="attr">host</span>: <span class="string">&#x27;0.0.0.0&#x27;</span>, <span class="comment">// 默认是 localhost,可不配置</span></span><br><span class="line">  <span class="attr">port</span>: <span class="number">8000</span>, <span class="comment">// 配置端口号</span></span><br><span class="line">  <span class="attr">open</span>: <span class="literal">true</span>, <span class="comment">// 启动是否打开浏览器</span></span><br><span class="line">  <span class="attr">overlay</span>: &#123; <span class="comment">// 是否在浏览器上显示编译的 errors 或 warnings</span></span><br><span class="line">    <span class="attr">warnings</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">errors</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">proxy</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;/api&#x27;</span>: &#123; <span class="comment">// 被代理的接口名</span></span><br><span class="line">      <span class="attr">target</span>: <span class="string">&#x27;http://localhost:8080&#x27;</span>, <span class="comment">// url地址</span></span><br><span class="line">      <span class="attr">changeOrigin</span>: <span class="literal">true</span>, <span class="comment">// 发送请求头中 host 是否设置成 target</span></span><br><span class="line">      <span class="attr">pathRewrite</span>: &#123; <span class="comment">// 重定向</span></span><br><span class="line">        <span class="string">&#x27;^/api&#x27;</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看路由中<code>(router/index.js)</code>是否使用<code>history</code>,是的话修改为<code>hash</code>。或者将<code>mode</code>直接注掉，因为默认使用<code>hash</code></li>
+</ul>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630002713210.png" alt="image-20220630002713210"></p>
+<p>查看路由中<code>(router/index.js)</code>是否使用<code>history</code>,是的话修改为<code>hash</code>。或者将mode直接注掉，因为默认使用hash。</p>
+<p>然后再次使用<code>npm run build</code>进行打包就会出现<code>dist</code>文件夹,已经其中静态文件会放置到<code>static</code>中。</p>
+<p>到此打包已经结束。</p>
+<h2 id="部署nginx"><a href="#部署nginx" class="headerlink" title="部署nginx"></a>部署nginx</h2><ul>
+<li><p>首先安装<code>nignx</code>，具体可搜博客</p>
+</li>
+<li><p>然后将<code>dish</code>中的内容复制到<code>nginx</code>目录下的<code>html</code>文件夹下</p>
+</li>
+</ul>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630003424171.png" alt="image-20220630003424171"></p>
+<ul>
+<li>最后更改<code>nginx.conf</code></li>
+</ul>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630003747543.png" alt="image-20220630003747543"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#user  nobody;</span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">    #                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">    #                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       8001;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line">        root &quot;E:\ideaworkplace\AVIC\AVICTest\vue-admin\dist&quot;;</span><br><span class="line">        location / &#123;</span><br><span class="line">            #root   html;</span><br><span class="line">            #index  index.html index.htm;</span><br><span class="line">              try_files $uri  /index.html;</span><br><span class="line">        &#125;</span><br><span class="line">          location ^~ /api/ &#123;     </span><br><span class="line">                proxy_pass http://localhost:8080/;  #后端服务真实地址</span><br><span class="line">        &#125;</span><br><span class="line">#        location /api &#123;</span><br><span class="line">#                proxy_pass http://localhost:8080;</span><br><span class="line">#	proxy_http_version 1.1;</span><br><span class="line">#	proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">#	proxy_set_header Connection &#x27;upgrade&#x27;;</span><br><span class="line">#	proxy_set-header Host $host;</span><br><span class="line">#	proxy_cache_bypass $http_update;</span><br><span class="line"></span><br><span class="line">#        &#125;</span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        #</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        # proxy the PHP scripts to Apache listening on 127.0.0.1:80</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    proxy_pass   http://127.0.0.1;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span><br><span class="line">        #</span><br><span class="line">        #location ~ \.php$ &#123;</span><br><span class="line">        #    root           html;</span><br><span class="line">        #    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">        #    fastcgi_index  index.php;</span><br><span class="line">        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span><br><span class="line">        #    include        fastcgi_params;</span><br><span class="line">        #&#125;</span><br><span class="line"></span><br><span class="line">        # deny access to .htaccess files, if Apache&#x27;s document root</span><br><span class="line">        # concurs with nginx&#x27;s one</span><br><span class="line">        #</span><br><span class="line">        #location ~ /\.ht &#123;</span><br><span class="line">        #    deny  all;</span><br><span class="line">        #&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # another virtual host using mix of IP-, name-, and port-based configuration</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       8000;</span><br><span class="line">    #    listen       somename:8080;</span><br><span class="line">    #    server_name  somename  alias  another.alias;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # HTTPS server</span><br><span class="line">    #</span><br><span class="line">    #server &#123;</span><br><span class="line">    #    listen       443 ssl;</span><br><span class="line">    #    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    #    ssl_certificate      cert.pem;</span><br><span class="line">    #    ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">    #    ssl_session_cache    shared:SSL:1m;</span><br><span class="line">    #    ssl_session_timeout  5m;</span><br><span class="line"></span><br><span class="line">    #    ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">    #    ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">    #    location / &#123;</span><br><span class="line">    #        root   html;</span><br><span class="line">    #        index  index.html index.htm;</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后直接循行Nginx.exe ,或者start nginx都可，屏幕会闪烁以下，表示运行成功</li>
+<li>然后就能访问</li>
+</ul>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630004000543.png" alt="image-20220630004000543"></p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220630004035072.png" alt="image-20220630004035072"></p>
+<p>小结：由于是第一次部署前后端分离项目，期间遇到很多问题，一般解决思路通过程序和打完的包互相访问（4种）试出哪个有问题，然后对应的解决。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" data-id="cl5kjvtc7000dus8bfg64g2e8" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/14/Spring%E6%8A%80%E6%9C%AF%E6%89%8B%E5%86%8C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/14/Spring%20Maven/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/14/%E7%BC%96%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%E6%8A%80%E6%9C%AF%E6%89%8B%E5%86%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%20Maven/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

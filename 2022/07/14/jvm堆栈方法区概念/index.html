@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1、Java栈Java栈的区域很小，只有1M，特点是存取速度很快，所以在stack中存放的都是快速执行的任务，基本数据类型的数据，和对象的引用（reference）。 驻留于常规RAM（随机访问存储器）区域。但可通过它的“栈指针”获取处理的直接支持。栈指针若向下移，会创建新的内存；若向上移，则会释放那些内存。这是一种特别快、特别有效的数据保存方式，仅次于寄存器。创建程序时，Java编译器必须准确地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/07/14/jvm%E5%A0%86%E6%A0%88%E6%96%B9%E6%B3%95%E5%8C%BA%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、Java栈Java栈的区域很小，只有1M，特点是存取速度很快，所以在stack中存放的都是快速执行的任务，基本数据类型的数据，和对象的引用（reference）。 驻留于常规RAM（随机访问存储器）区域。但可通过它的“栈指针”获取处理的直接支持。栈指针若向下移，会创建新的内存；若向上移，则会释放那些内存。这是一种特别快、特别有效的数据保存方式，仅次于寄存器。创建程序时，Java编译器必须准确地">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220118104858930.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220118105033300.png">
+<meta property="og:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220118113558881.png">
+<meta property="article:published_time" content="2022-07-14T04:47:29.056Z">
+<meta property="article:modified_time" content="2022-06-14T03:41:33.944Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/ZQY/AppData/Roaming/Typora/typora-user-images/image-20220118104858930.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-jvm堆栈方法区概念" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/14/jvm%E5%A0%86%E6%A0%88%E6%96%B9%E6%B3%95%E5%8C%BA%E6%A6%82%E5%BF%B5/" class="article-date">
+  <time class="dt-published" datetime="2022-07-14T04:47:29.056Z" itemprop="datePublished">2022-07-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1、Java栈"><a href="#1、Java栈" class="headerlink" title="1、Java栈"></a>1、Java栈</h1><p>Java栈的区域很小，只有1M，特点是存取速度很快，所以在stack中存放的都是快速执行的任务，<strong>基本数据类型的数据</strong>，和<strong>对象的引用（reference）</strong>。</p>
+<p>驻留于常规RAM（<strong>随机访问存储器</strong>）区域。但可通过它的<strong>“栈指针”</strong>获取处理的直接支持。<strong>栈指针若向下移，会创建新的内存</strong>；<strong>若向上移，则会释放那些内存</strong>。这是一种特别快、特别有效的数据保存方式，仅次于寄存器。创建程序时，Java编译器必须准确地知道堆栈内保存的所有数据的“长度”以及“存在时间”。这是由于它必须生成相应的代码，以便向上和向下移动指针。这一限制无疑影响了程序的灵活性，所以尽管有些Java数据要保存在栈里——特别是对象句柄，但Java对象并不放到其中。</p>
+<p>JVM只会直接对JavaStack（Java栈）执行两种操作：①以帧为单位的压栈或出栈；②通过-Xss来设置， 若不够会抛出StackOverflowError异常。</p>
+<p>1.每个线程包含一个栈区，栈中只保存基本数据类型的数据和自定义对象的引用(不是对象)，对象都存放在堆区中<br>2.每个栈中的数据(原始类型和对象引用)都是私有的，其他栈不能访问。<br>3.栈分为3个部分：基本数据类型的变量区、执行环境上下文、操作指令区(存放操作指令)。</p>
+<p>栈是存放线程调用方法时存储局部变量表，操作，方法出口等与方法执行相关的信息，Java栈所占内存的大小由Xss来调节，方法调用层次太多会撑爆这个区域。</p>
+<h1 id="2、程序计数（ProgramCounter）寄存器"><a href="#2、程序计数（ProgramCounter）寄存器" class="headerlink" title="2、程序计数（ProgramCounter）寄存器"></a>2、程序计数（ProgramCounter）寄存器</h1><p>PC寄存器（ PC register ）：每个线程启动的时候，都会创建一个PC（Program Counter，程序计数器）寄存器。PC寄存器里保存有当前正在执行的JVM指令的地址。 每一个线程都有它自己的PC寄存器，也是该线程启动时创建的。保存下<em>一条将要执行的指令地址的寄存器是</em> ：PC寄存器。PC寄存器的内容总是指向下一条将被执行指令的地址，这里的地址可以是一个本地指针，也可以是在方法区中相对应于该方法起始指令的偏移量。</p>
+<h1 id="3、本地方法栈"><a href="#3、本地方法栈" class="headerlink" title="3、本地方法栈"></a>3、本地方法栈</h1><p>Nativemethodstack(本地方法栈)：保存native方法进入区域的地址。</p>
+<h1 id="4、堆"><a href="#4、堆" class="headerlink" title="4、堆"></a>4、堆</h1><p><strong>类的对象放在heap（堆）中</strong>，所有的<strong>类对象都是通过new方法创建</strong>，创建后，在stack（栈）会创建类对象的引用（内存地址）。</p>
+<p>一种常规用途的内存池（也在RAM（随机存取存储器 ）区域），其中保存了Java对象。和栈不同：“<strong>内存堆”或“堆”最吸引人的地方在于编译器不必知道要从堆里分配多少存储空间，也不必知道存储的数据要在堆里停留多长的时间</strong>。因此，用堆保存数据时会得到更大的灵活性。要求创建一个对象时，只需用new命令编辑相应的代码即可。执行这些代码时，会在堆里自动进行数据的保存。当然，为达到这种灵活性，必然会付出一定的代价：在堆里分配存储空间时会花掉更长的时间。</p>
+<p>JVM将所有对象的实例（即用new创建的对象）（对应于对象的引用（引用就是内存地址））的内存都分配在堆上，堆所占内存的大小由-Xmx指令和-Xms指令来调节，sample如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HeapOOM</span> &#123;              </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">OOMObject</span>&#123;&#125;          </span><br><span class="line">    <span class="comment">/**       </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args       </span></span><br><span class="line"><span class="comment">     */</span>       </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;           </span><br><span class="line">        <span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();<span class="comment">// List类和ArrayList类都是集合类，</span></span><br><span class="line">                                    <span class="comment">// 但是ArrayList可以理解为顺序表，</span></span><br><span class="line">                                    <span class="comment">// 属于线性表。                      </span></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;               </span><br><span class="line">            list.add(<span class="keyword">new</span> <span class="title class_">OOMObject</span>());           </span><br><span class="line">        &#125;       </span><br><span class="line">    &#125;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加上JVM参数-verbose:gc -Xms10M -Xmx10M -XX:+PrintGCDetails -XX:SurvivorRatio&#x3D;8 -XX:+HeapDumpOnOutOfMemoryError，就能很快报出OOM异常（内存溢出异常）：</p>
+<p>Exception in thread “main” java.lang.OutOfMemoryError: Java heap space</p>
+<p>并且能自动生成Dump。</p>
+<h1 id="5、方法区"><a href="#5、方法区" class="headerlink" title="5、方法区"></a>5、方法区</h1><p><strong>method（方法区）又叫静态区，存放所有的①类（class），②静态变量（static变量），③静态方法，④常量和⑤成员方法。</strong></p>
+<p>1.又叫静态区，跟堆一样，被所有的线程共享。</p>
+<p>2.方法区中存放的都是在整个程序中永远唯一的元素。这也是方法区被所有的线程共享的原因。</p>
+<p>（顺便展开静态变量和常量的区别： 静态变量本质是变量，是整个类所有对象共享的一个变量，其值一旦改变对这个类的所有对象都有影响；常量一旦赋值后不能修改其引用，其中基本数据类型的常量不能修改其值。）</p>
+<p>Java里面是没有静态变量这个概念的，不信你自己在某个成员方法里面定义一个static int i &#x3D; 0；Java里只有静态成员变量。它属于类的属性。至于他放哪里？楼上说的是静态区。我不知道到底有没有这个翻译。但是深入JVM里是翻译为方法区的。虚拟机的体系结构：①Java栈，② 堆，③PC寄存器，④方法区，⑤本地方法栈，⑥运行常量池。而方法区保存的就是一个类的模板，堆是放类的实例（即对象）的。栈是一般来用来函数计算的。随便找本计算机底层的书都知道了。栈里的数据，函数执行完就不会存储了。这就是为什么局部变量每一次都是一样的。就算给他加一后，下次执行函数的时候还是原来的样子。</p>
+<p>方法区的大小由-XX:PermSize和-XX:MaxPermSize来调节，类太多有可能撑爆永久代。静态变量或常量也有可能撑爆方法区。 </p>
+<h1 id="6、运行常量池-也属于方法区的"><a href="#6、运行常量池-也属于方法区的" class="headerlink" title="6、运行常量池(也属于方法区的)"></a>6、运行常量池(也属于方法区的)</h1><p>这儿的“静态”是指“位于固定位置”。程序运行期间，静态存储的数据将随时等候调用。可用static关键字指出一个对象的特定元素是静态的。但Java对象本身永远都不会置入静态存储空间。</p>
+<p>这个区域属于方法区。该区域存放类和接口的常量，除此之外，它还存放成员变量和成员方法的所有引用。当一个成员变量或者成员方法被引用的时候，JVM就通过运行常量池中的这些引用来查找成员变量和成员方法在内存中的的实际地址。</p>
+<h1 id="7、举例分析"><a href="#7、举例分析" class="headerlink" title="7、举例分析"></a>7、举例分析</h1><p>例子如下：</p>
+<p>为了更清楚地搞明白程序运行时，数据区里的情况，我们来准备2个小道具（2个非常简单的小程序）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AppMain.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppMain</span> &#123;                         <span class="comment">//运行时，JVM把AppMain的信息都放入方法区    </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123; <span class="comment">//main成员方法本身放入方法区。    </span></span><br><span class="line">        <span class="type">Sample</span> <span class="variable">test1</span> <span class="operator">=</span> <span class="keyword">new</span>  <span class="title class_">Sample</span>( <span class="string">&quot; 测试1 &quot;</span> );   <span class="comment">//test1是引用，所以放到栈区里，Sample是自定义对象应该放到堆里面    </span></span><br><span class="line">        <span class="type">Sample</span> <span class="variable">test2</span> <span class="operator">=</span> <span class="keyword">new</span>  <span class="title class_">Sample</span>( <span class="string">&quot; 测试2 &quot;</span> );         </span><br><span class="line">        test1.printName();    </span><br><span class="line">        test2.printName();    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// Sample.java       </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sample</span> &#123;   <span class="comment">//运行时，JVM把appmain的信息都放入方法区。            </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  name;      <span class="comment">//new Sample实例后，name引用放入栈区里，name对象放入堆里。     </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  <span class="title function_">Sample</span><span class="params">(String name)</span> &#123;    </span><br><span class="line">        <span class="built_in">this</span> .name = name;    </span><br><span class="line">    &#125;          </span><br><span class="line">        </span><br><span class="line">    <span class="keyword">public</span>   <span class="keyword">void</span>  <span class="title function_">printName</span><span class="params">()</span> &#123;<span class="comment">// printName()成员方法本身放入方法区里。    </span></span><br><span class="line">        System.out.println(name);    </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>OK，让我们开始行动吧，出发指令就是：“java AppMain”，包包里带好我们的行动向导图。</p>
+<p>系统收到了我们发出的指令，启动了一个Java虚拟机进程，这个进程首先从classpath中找到AppMain.class文件，读取这个文件中的二进制数据，然后把Appmain类的类信息存放到运行时数据区的方法区中。这一过程称为AppMain类的加载过程。</p>
+<p>接着，JVM定位到方法区中AppMain类的Main()方法的字节码，开始执行它的指令。这个main()方法的第一条语句就是：</p>
+<p>Sample test1 &#x3D; new Sample(“测试1”);</p>
+<p>语句很简单啦，就是让JVM创建一个Sample实例，并且呢，使引用变量test1引用这个实例。貌似小case一桩哦，就让我们来跟踪一下JVM，看看它究竟是怎么来执行这个任务的：</p>
+<p>1、Java虚拟机一看，不就是建立一个Sample类的实例吗，简单，于是就直奔方法区（方法区存放已经加载的类的相关信息，如类、静态变量和常量）而去，先找到Sample类的类型信息再说。结果呢，嘿嘿，没找到@@，这会儿的方法区里还没有Sample类呢（即Sample类的类信息还没有进入方法区中）。可JVM也不是一根筋的笨蛋，于是，它发扬“自己动手，丰衣足食”的作风，立马加载了Sample类， 把Sample类的相关信息存放在了方法区中。</p>
+<p>2、Sample类的相关信息加载完成后。Java虚拟机做的第一件事情就是在堆中为一个新的Sample类的实例分配内存，这个Sample类的实例持有着指向方法区的Sample类的类型信息的引用（Java中引用就是内存地址）。这里所说的引用，实际上指的是Sample类的类型信息在方法区中的内存地址，其实，就是有点类似于C语言里的指针啦~~，而这个地址呢，就存放了在Sample类的实例的数据区中。</p>
+<p>3、在JVM中的一个进程中，每个线程都会拥有一个方法调用栈，用来跟踪线程运行中一系列的方法调用过程，栈中的每一个元素被称为栈帧，每当线程调用一个方法的时候就会向方法栈中压入一个新栈帧。这里的帧用来存储方法的参数、局部变量和运算过程中的临时数据。OK，原理讲完了，就让我们来继续我们的跟踪行动！位于“&#x3D;”前的test1是一个在main()方法中定义的变量，可见，它是一个局部变量，因此，test1这个局部变量会被JVM添加到执行main()方法的主线程的Java方法调用栈中。而“&#x3D;”将把这个test1变量指向堆区中的Sample实例，也就是说，test1这个局部变量持有指向Sample类的实例的引用（即内存地址）。</p>
+<p>OK，到这里为止呢，JVM就完成了这个简单语句的执行任务。参考我们的行动向导图，我们终于初步摸清了JVM的一点点底细了，COOL！</p>
+<p>接下来，JVM将继续执行后续指令，在堆区里继续创建另一个Sample类的实例，然后依次执行它们的printName()方法。当JVM执行test1.printName()方法时，JVM根据局部变量test1持有的引用，定位到堆中的Sample类的实例，再根据Sample类的实例持有的引用，定位到方法区中Sample类的类型信息（包括①类，②静态变量，③静态方法，④常量和⑤成员方法），从而获取printName()成员方法的字节码，接着执行printName()成员方法包含的指令。</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118104858930.png" alt="image-20220118104858930"></p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118105033300.png" alt="image-20220118105033300"></p>
+<p>Jvm调优一般都是在调堆</p>
+<ul>
+<li><p>类加载器</p>
+<p>作用：加载Class文件~</p>
+<p><img src="C:\Users\ZQY\AppData\Roaming\Typora\typora-user-images\image-20220118113558881.png" alt="image-20220118113558881"></p>
+<ul>
+<li>虚拟机自带的加载器</li>
+<li>启动类（根）加载器</li>
+<li>扩展类加载器</li>
+<li>应用程序加载器</li>
+<li>百度：双亲委派机制</li>
+</ul>
+</li>
+<li><p>双亲委派机制</p>
+<ul>
+<li>双亲委派机制安全</li>
+<li>App&#x3D;&#x3D;&#x3D;&gt;EXC&#x3D;&#x3D;&#x3D;&gt;BOOT（最终执行）</li>
+<li>如果BOOT里面没有 EXC里面也没有最后才回去当前应用中寻找</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.lang;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">string</span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>();</span><br><span class="line">        s.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果自己定义一个java.lang中的toString方法，最终执行会报没有main方法的错误原因为最终执行的还是jdk中自带的toString其中是没有main方法的。</p>
+<ul>
+<li><p>类加载器收到加载的请求</p>
+</li>
+<li><p>将这个请求向上委托给父类加载器去完成，一直委托直到启动类加载器</p>
+</li>
+<li><p>启动加载器检查是否能够加载当前这个类，能加载就结束，使用当前的加载器，否则，抛出异常，通知子类加载器进行加载</p>
+</li>
+<li><p>重复步骤3</p>
+<p>Class Not found~</p>
+<p>null:java调用不到~ C、C++</p>
+<p>Java &#x3D; C++：去掉繁琐的东西，指针，内存管理~</p>
+<p>Java &#x3D; C++–</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/07/14/jvm%E5%A0%86%E6%A0%88%E6%96%B9%E6%B3%95%E5%8C%BA%E6%A6%82%E5%BF%B5/" data-id="cl5kjvtc5000aus8b2hxjap0l" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/14/Learnlist/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/14/idea%E6%89%93%E5%8C%85%E9%A1%B9%E7%9B%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/14/%E7%BC%96%E7%A8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%E6%8A%80%E6%9C%AF%E6%89%8B%E5%86%8C/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/springboot+vue%E6%89%93%E5%8C%85%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/14/Spring%20Maven/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
